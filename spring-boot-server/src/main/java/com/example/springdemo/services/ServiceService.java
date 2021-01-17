@@ -3,6 +3,7 @@ package com.example.springdemo.services;
 import com.example.springdemo.dto.ServiceDTO;
 import com.example.springdemo.dto.builders.FreelancerBuilder;
 import com.example.springdemo.dto.builders.ServiceBuilder;
+import com.example.springdemo.entities.Announcement;
 import com.example.springdemo.entities.Company;
 import com.example.springdemo.entities.Freelancer;
 import com.example.springdemo.entities.Service;
@@ -13,6 +14,7 @@ import com.example.springdemo.repositories.FreelancerRepository;
 import com.example.springdemo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,10 +54,8 @@ public class ServiceService {
     }
 
     public Integer insert(ServiceDTO service) {
-
-        return serviceRepository
-                .save(builder.generateEntityFromDTO(service))
-                .getId();
+        Service s = builder.generateEntityFromDTO(service);
+        return serviceRepository.save(s).getId();
     }
 
     public Service update(ServiceDTO service) {
@@ -71,23 +71,31 @@ public class ServiceService {
         this.serviceRepository.deleteById(service.getId());
     }
 
-    public Set<Service> getServicesByFreelancer(Freelancer freelancer){
+    public Set<ServiceDTO> getServicesByFreelancer(Freelancer freelancer){
         Set<Service> servSet = serviceRepository.getAllPerFreelancer(freelancer);
-        return servSet;
+        return servSet.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
     }
 
-    public Set<Service> getServicesByCompany(Company company){
+    public Set<ServiceDTO> getServicesByCompany(Company company){
         Set<Service> servSet = serviceRepository.getAllPerCompany(company);
-        return servSet;
+        return servSet.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
     }
 
-    public Set<Service> getByDurationAscending(){
+    public Set<ServiceDTO> getByDurationAscending(){
         Set<Service> servSet = serviceRepository.getAllByDuration();
-        return servSet;
+        return servSet.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
     }
 
-    public Set<Service> getByPriceAscending(){
+    public Set<ServiceDTO> getByPriceAscending(){
         Set<Service> servSet = serviceRepository.getAllByPrice();
-        return servSet;
+        return servSet.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
     }
 }

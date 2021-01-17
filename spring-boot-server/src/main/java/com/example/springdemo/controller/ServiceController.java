@@ -27,6 +27,7 @@ public class ServiceController {
 
     @PostMapping()
     public Integer insert(@RequestBody ServiceDTO service){
+
         return sservice.insert(service);
     }
 
@@ -46,22 +47,22 @@ public class ServiceController {
     }
 
     @GetMapping(value = "/freelancerServices")
-    public Set<Service> getServicesByFreelancer(@RequestBody Freelancer f){
+    public Set<ServiceDTO> getServicesByFreelancer(@RequestBody Freelancer f){
         return sservice.getServicesByFreelancer(f);
     }
 
     @GetMapping(value = "/companyServices")
-    public Set<Service> getServicesByCompany(@RequestBody Company c){
+    public Set<ServiceDTO> getServicesByCompany(@RequestBody Company c){
         return sservice.getServicesByCompany(c);
     }
 
     @GetMapping(value = "/ascendingPrice")
-    public Set<Service> getServicesPriceAscending(){
+    public Set<ServiceDTO> getServicesPriceAscending(){
         return sservice.getByPriceAscending();
     }
 
     @GetMapping(value = "/ascendingDuration")
-    public Set<Service> getServicesDurationAscending(){
+    public Set<ServiceDTO> getServicesDurationAscending(){
         return sservice.getByDurationAscending();
     }
 }
