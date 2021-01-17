@@ -5,6 +5,8 @@ import com.example.springdemo.dto.builders.AnnouncementBuilder;
 import com.example.springdemo.entities.Announcement;
 import com.example.springdemo.errorhandler.ResourceNotFoundException;
 import com.example.springdemo.repositories.AnnouncementRepository;
+import com.example.springdemo.repositories.FreelancerRepository;
+import com.example.springdemo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,14 @@ import java.util.stream.Collectors;
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
+    private final ServiceRepository serviceRepository;
+    private final FreelancerRepository freelancerRepository;
 
     @Autowired
-    public AnnouncementService(AnnouncementRepository ar){
+    public AnnouncementService(AnnouncementRepository ar,ServiceRepository sr, FreelancerRepository fr){
         this.announcementRepository = ar;
+        this.serviceRepository = sr;
+        this.freelancerRepository = fr;
     }
 
     public Announcement findAnnouncementById(Integer id){
@@ -32,26 +38,26 @@ public class AnnouncementService {
 
     public Set<AnnouncementDTO> findAll(){
         Set<Announcement> announcements = announcementRepository.getAllOrdered();
-
+        AnnouncementBuilder builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
         return announcements.stream()
-                .map(AnnouncementBuilder::generateDTOFromEntity)
+                .map(builder::generateDTOFromEntity)
                 .collect(Collectors.toSet());
     }
 
     public Integer insert(AnnouncementDTO aDTO) {
-
+        AnnouncementBuilder builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
         return announcementRepository
-                .save(AnnouncementBuilder.generateEntityFromDTO(aDTO))
+                .save(builder.generateEntityFromDTO(aDTO))
                 .getId();
     }
 
     public Announcement update(AnnouncementDTO aDTO) {
-
+        AnnouncementBuilder builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
         Optional<Announcement> announcementOptional = announcementRepository.findById(aDTO.getId());
         if(!announcementOptional.isPresent()){
             return null;
         }
-        return announcementRepository.save(AnnouncementBuilder.generateEntityFromDTO(aDTO));
+        return announcementRepository.save(builder.generateEntityFromDTO(aDTO));
     }
 
     public void delete(AnnouncementDTO aDTO){

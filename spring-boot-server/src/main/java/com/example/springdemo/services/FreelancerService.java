@@ -13,6 +13,7 @@ import com.example.springdemo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,5 +62,18 @@ public class FreelancerService {
 
     public void delete(FreelancerDTO fDTO){
         this.freelancerRepository.deleteById(fDTO.getId());
+    }
+
+    public Freelancer addAnnouncement(Announcement announcement, Integer id){
+        Optional<Freelancer> freelancerOptional = freelancerRepository.findById(id);
+        if (freelancerOptional.isPresent()){
+            Freelancer f = freelancerOptional.get();
+            List<Announcement> announcements = f.getAnnouncements();
+            announcements.add(announcement);
+            f.setAnnouncements(announcements);
+            return freelancerRepository.save(f);
+        }else{
+            return null;
+        }
     }
 }

@@ -10,22 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class AnnouncementBuilder {
 
-    private static FreelancerRepository freelancerRepository;
-    private static ServiceRepository serviceRepository;
+    private final FreelancerRepository freelancerRepository;
+    private final ServiceRepository serviceRepository;
 
-    @Autowired
     public AnnouncementBuilder(FreelancerRepository fr, ServiceRepository sr){
         freelancerRepository = fr;
         serviceRepository = sr;
     }
 
-    public static AnnouncementDTO generateDTOFromEntity(Announcement a){
+    public AnnouncementDTO generateDTOFromEntity(Announcement a){
         return new AnnouncementDTO(a.getId(), a.getTitle(), a.getDescription(), a.getCategory(), a.getTechnology(),
                 a.getStandardPrice(), a.getStandardDuration(), a.getPremiumPrice(), a.getPremiumDuration(),
                 a.getFreelancer().getId(), a.getService().getId());
     }
 
-    public static Announcement generateEntityFromDTO(AnnouncementDTO ad){
+    public Announcement generateEntityFromDTO(AnnouncementDTO ad){
         Freelancer f = freelancerRepository.getById(ad.getFreelancerId());
         Service s = serviceRepository.getById(ad.getServiceId());
         return new Announcement(ad.getId(), ad.getTitle(),ad.getDescription(),ad.getCategory(),ad.getTechnology(),

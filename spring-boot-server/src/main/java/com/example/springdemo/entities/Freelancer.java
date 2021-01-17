@@ -1,5 +1,7 @@
 package com.example.springdemo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +37,11 @@ public class Freelancer {
     private String description;
     private Float rating;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "freelancer", fetch = FetchType.LAZY)
     private List<Announcement> announcements;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "freelancer", fetch = FetchType.LAZY)
     private List<Service> services;
 

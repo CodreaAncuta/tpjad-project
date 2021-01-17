@@ -35,7 +35,7 @@ public class Announcement {
     private Freelancer freelancer;
 
     @OneToOne(mappedBy = "announcement", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+            fetch = FetchType.LAZY, optional = true)
     private Service service;
 
     public Announcement() {
