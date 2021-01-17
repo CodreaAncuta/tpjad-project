@@ -7,6 +7,9 @@ import com.example.springdemo.entities.Company;
 import com.example.springdemo.entities.Freelancer;
 import com.example.springdemo.entities.Service;
 import com.example.springdemo.errorhandler.ResourceNotFoundException;
+import com.example.springdemo.repositories.AnnouncementRepository;
+import com.example.springdemo.repositories.CompanyRepository;
+import com.example.springdemo.repositories.FreelancerRepository;
 import com.example.springdemo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,9 +21,20 @@ import java.util.stream.Collectors;
 public class ServiceService {
 
     private final ServiceRepository serviceRepository;
+    private CompanyRepository companyRepository;
+    private FreelancerRepository freelancerRepository;
+    private AnnouncementRepository announcementRepository;
+
+    private ServiceBuilder builder;
 
     @Autowired
-    public ServiceService(ServiceRepository serviceRepository){ this.serviceRepository=serviceRepository;}
+    public ServiceService(ServiceRepository sr,CompanyRepository cr,FreelancerRepository fr,AnnouncementRepository ar){
+        this.serviceRepository = sr;
+        companyRepository = cr;
+        freelancerRepository = fr;
+        announcementRepository = ar;
+        builder = new ServiceBuilder(cr,fr,ar);
+    }
 
     public Service findServiceById(Integer id){
         Optional<Service> service = serviceRepository.findById(id);
@@ -33,14 +47,14 @@ public class ServiceService {
     public Set<ServiceDTO> findAll(){
         Set<Service> services = serviceRepository.getAllOrdered();
         return services.stream()
-                .map(ServiceBuilder::generateDTOFromEntity)
+                .map(builder::generateDTOFromEntity)
                 .collect(Collectors.toSet());
     }
 
     public Integer insert(ServiceDTO service) {
 
         return serviceRepository
-                .save(ServiceBuilder.generateEntityFromDTO(service))
+                .save(builder.generateEntityFromDTO(service))
                 .getId();
     }
 
@@ -50,7 +64,7 @@ public class ServiceService {
         if(!serviceOptional.isPresent()){
             return null;
         }
-        return serviceRepository.save(ServiceBuilder.generateEntityFromDTO(service));
+        return serviceRepository.save(builder.generateEntityFromDTO(service));
     }
 
     public void delete(ServiceDTO service){

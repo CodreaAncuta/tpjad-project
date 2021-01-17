@@ -45,6 +45,31 @@ public class AnnouncementDTO {
         this.serviceId = serviceId;
     }
 
+    public AnnouncementDTO(String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Integer freelancerId) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.technology = technology;
+        this.standardPrice = standardPrice;
+        this.standardDuration = standardDuration;
+        this.premiumPrice = premiumPrice;
+        this.premiumDuration = premiumDuration;
+        this.freelancerId = freelancerId;
+    }
+
+    public AnnouncementDTO(Integer id, String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Integer freelancerId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.technology = technology;
+        this.standardPrice = standardPrice;
+        this.standardDuration = standardDuration;
+        this.premiumPrice = premiumPrice;
+        this.premiumDuration = premiumDuration;
+        this.freelancerId = freelancerId;
+    }
+
     public AnnouncementDTO() {
     }
 

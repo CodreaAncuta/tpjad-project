@@ -14,16 +14,15 @@ import java.util.Optional;
 
 public class FreelancerBuilder {
 
-    private static AnnouncementRepository announcementRepository;
-    private static ServiceRepository serviceRepository;
+    private AnnouncementRepository announcementRepository;
+    private ServiceRepository serviceRepository;
 
-    @Autowired
     public FreelancerBuilder(AnnouncementRepository ar, ServiceRepository sr){
         announcementRepository = ar;
         serviceRepository = sr;
     }
 
-    public static FreelancerDTO generateDTOFromEntity(Freelancer f) {
+    public FreelancerDTO generateDTOFromEntity(Freelancer f) {
         List<Integer> announcementsIds = new ArrayList<>();
         List<Integer> servicesIds = new ArrayList<>();
 
@@ -39,7 +38,7 @@ public class FreelancerBuilder {
                 f.getAddress(),f.getDescription(),f.getRating(),announcementsIds, servicesIds);
     }
 
-    public static Freelancer generateEntityFromDTO(FreelancerDTO f) {
+    public Freelancer generateEntityFromDTO(FreelancerDTO f) {
         List<Announcement> announcements = new ArrayList<>();
         List<Service> services= new ArrayList<>();
 
@@ -57,7 +56,7 @@ public class FreelancerBuilder {
                 f.getAddress(),f.getDescription(),f.getRating(),announcements,services);
     }
 
-    public static Freelancer generateEntityInsertFromDTO(FreelancerDTO f) {
+    public Freelancer generateEntityInsertFromDTO(FreelancerDTO f) {
         return new Freelancer(f.getId(),f.getName(),f.getEmail(),f.getPassword(),f.getAreaOfExpertise(),f.getYearsOfExperience(),
                 f.getAddress(),f.getDescription(),f.getRating());
     }

@@ -55,6 +55,19 @@ public class Announcement {
         this.service = service;
     }
 
+    public Announcement(Integer id, String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Freelancer freelancer) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.technology = technology;
+        this.standardPrice = standardPrice;
+        this.standardDuration = standardDuration;
+        this.premiumPrice = premiumPrice;
+        this.premiumDuration = premiumDuration;
+        this.freelancer = freelancer;
+    }
+
     public Integer getId() {
         return id;
     }

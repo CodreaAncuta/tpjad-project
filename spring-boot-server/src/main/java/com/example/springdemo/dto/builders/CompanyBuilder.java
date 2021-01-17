@@ -6,7 +6,6 @@ import com.example.springdemo.entities.Announcement;
 import com.example.springdemo.entities.Company;
 import com.example.springdemo.entities.Service;
 import com.example.springdemo.repositories.ServiceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +13,13 @@ import java.util.Optional;
 
 public class CompanyBuilder {
 
-    private static ServiceRepository serviceRepository;
+    private ServiceRepository serviceRepository;
 
-    @Autowired
     public CompanyBuilder(ServiceRepository sr){
         serviceRepository = sr;
     }
 
-    public static CompanyDTO generateDTOFromEntity(Company c){
+    public CompanyDTO generateDTOFromEntity(Company c){
 
         List<Integer> servicesIds = new ArrayList<>();
         for(Service s: c.getServices()){
@@ -32,7 +30,7 @@ public class CompanyBuilder {
                 c.getCity(),c.getLogo(),servicesIds);
     }
 
-    public static Company generateEntityFromDTO(CompanyDTO c){
+    public Company generateEntityFromDTO(CompanyDTO c){
 
         List<Service> services = new ArrayList<>();
         for(Integer s: c.getServicesId()){
@@ -44,7 +42,7 @@ public class CompanyBuilder {
                 c.getCity(),c.getLogo(),services);
     }
 
-    public static Company generateEntityInsertFromDTO(CompanyDTO c){
+    public Company generateEntityInsertFromDTO(CompanyDTO c){
 
         return new Company(c.getId(),c.getName(),c.getEmailContact(),c.getPassword(),c.getAreaOfWork(),
                 c.getCity(),c.getLogo());

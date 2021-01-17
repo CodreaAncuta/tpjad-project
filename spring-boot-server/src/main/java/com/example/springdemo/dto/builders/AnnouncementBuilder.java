@@ -19,9 +19,16 @@ public class AnnouncementBuilder {
     }
 
     public AnnouncementDTO generateDTOFromEntity(Announcement a){
-        return new AnnouncementDTO(a.getId(), a.getTitle(), a.getDescription(), a.getCategory(), a.getTechnology(),
-                a.getStandardPrice(), a.getStandardDuration(), a.getPremiumPrice(), a.getPremiumDuration(),
-                a.getFreelancer().getId(), a.getService().getId());
+        if (a.getService() != null){
+            return new AnnouncementDTO(a.getId(), a.getTitle(), a.getDescription(), a.getCategory(), a.getTechnology(),
+                    a.getStandardPrice(), a.getStandardDuration(), a.getPremiumPrice(), a.getPremiumDuration(),
+                    a.getFreelancer().getId(), a.getService().getId());
+        }else{
+            return new AnnouncementDTO(a.getId(), a.getTitle(), a.getDescription(), a.getCategory(), a.getTechnology(),
+                    a.getStandardPrice(), a.getStandardDuration(), a.getPremiumPrice(), a.getPremiumDuration(),
+                    a.getFreelancer().getId());
+        }
+
     }
 
     public Announcement generateEntityFromDTO(AnnouncementDTO ad){

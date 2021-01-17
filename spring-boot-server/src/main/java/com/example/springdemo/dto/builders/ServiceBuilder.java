@@ -14,22 +14,21 @@ import java.util.Optional;
 
 public class ServiceBuilder {
 
-    private static CompanyRepository companyRepository;
-    private static FreelancerRepository freelancerRepository;
-    private static AnnouncementRepository announcementRepository;
+    private CompanyRepository companyRepository;
+    private FreelancerRepository freelancerRepository;
+    private AnnouncementRepository announcementRepository;
 
-    @Autowired
     public ServiceBuilder(CompanyRepository cr, FreelancerRepository fr, AnnouncementRepository ar){
         companyRepository = cr;
         freelancerRepository = fr;
         announcementRepository = ar;
     }
 
-    public static ServiceDTO generateDTOFromEntity(Service c){
+    public ServiceDTO generateDTOFromEntity(Service c){
         return new ServiceDTO(c.getId(), c.getJobPrice(), c.getJobDuration(), c.getFreelancer().getId(), c.getCompany().getId(), c.getAnnouncement().getId());
     }
 
-    public static Service generateEntityFromDTO(ServiceDTO s){
+    public Service generateEntityFromDTO(ServiceDTO s){
         Optional<Company> companyOptional= companyRepository.findById(s.getCompanyId());
         Optional<Freelancer> freelancerOptional = freelancerRepository.findById(s.getFreelancerId());
         Optional<Announcement> announcementOptional = announcementRepository.findById(s.getAnnouncementId());

@@ -21,11 +21,14 @@ public class AnnouncementService {
     private final ServiceRepository serviceRepository;
     private final FreelancerRepository freelancerRepository;
 
+    private AnnouncementBuilder builder;
+
     @Autowired
     public AnnouncementService(AnnouncementRepository ar,ServiceRepository sr, FreelancerRepository fr){
         this.announcementRepository = ar;
         this.serviceRepository = sr;
         this.freelancerRepository = fr;
+        this.builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
     }
 
     public Announcement findAnnouncementById(Integer id){
@@ -38,21 +41,18 @@ public class AnnouncementService {
 
     public Set<AnnouncementDTO> findAll(){
         Set<Announcement> announcements = announcementRepository.getAllOrdered();
-        AnnouncementBuilder builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
         return announcements.stream()
                 .map(builder::generateDTOFromEntity)
                 .collect(Collectors.toSet());
     }
 
     public Integer insert(AnnouncementDTO aDTO) {
-        AnnouncementBuilder builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
         return announcementRepository
                 .save(builder.generateEntityFromDTO(aDTO))
                 .getId();
     }
 
     public Announcement update(AnnouncementDTO aDTO) {
-        AnnouncementBuilder builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
         Optional<Announcement> announcementOptional = announcementRepository.findById(aDTO.getId());
         if(!announcementOptional.isPresent()){
             return null;

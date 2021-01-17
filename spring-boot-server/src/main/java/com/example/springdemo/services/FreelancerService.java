@@ -22,10 +22,17 @@ import java.util.stream.Collectors;
 public class FreelancerService {
 
     private final FreelancerRepository freelancerRepository;
+    private final AnnouncementRepository announcementRepository;
+    private final ServiceRepository serviceRepository;
+
+    private FreelancerBuilder builder;
 
     @Autowired
-    public FreelancerService(FreelancerRepository fr){
+    public FreelancerService(FreelancerRepository fr,AnnouncementRepository ar,ServiceRepository sr){
         freelancerRepository = fr;
+        announcementRepository = ar;
+        serviceRepository = sr;
+        builder = new FreelancerBuilder(announcementRepository, serviceRepository);
     }
 
     public Freelancer findFreelancerById(Integer id){
@@ -40,14 +47,14 @@ public class FreelancerService {
         Set<Freelancer> freelancers = freelancerRepository.getAllOrdered();
 
         return freelancers.stream()
-                .map(FreelancerBuilder::generateDTOFromEntity)
+                .map(builder::generateDTOFromEntity)
                 .collect(Collectors.toSet());
     }
 
     public Integer insert(FreelancerDTO fDTO) {
 
         return freelancerRepository
-                .save(FreelancerBuilder.generateEntityInsertFromDTO(fDTO))
+                .save(builder.generateEntityInsertFromDTO(fDTO))
                 .getId();
     }
 
@@ -57,7 +64,7 @@ public class FreelancerService {
         if(!freelancerOptional.isPresent()){
             return null;
         }
-        return freelancerRepository.save(FreelancerBuilder.generateEntityFromDTO(fDTO));
+        return freelancerRepository.save(builder.generateEntityFromDTO(fDTO));
     }
 
     public void delete(FreelancerDTO fDTO){
