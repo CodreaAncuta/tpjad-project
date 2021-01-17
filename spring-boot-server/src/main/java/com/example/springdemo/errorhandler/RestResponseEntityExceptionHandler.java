@@ -1,4 +1,4 @@
-package com.example.springdemo.controller.errorhandler;
+package com.example.springdemo.errorhandler;
 
 import com.example.springdemo.errorhandler.*;
 import org.springframework.http.HttpHeaders;
