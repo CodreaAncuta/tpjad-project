@@ -1,5 +1,6 @@
-package com.example.springdemo.controller.errorhandler;
+package com.example.springdemo.controller;
 
+import com.example.springdemo.dto.ServiceDTO;
 import com.example.springdemo.entities.Company;
 import com.example.springdemo.entities.Freelancer;
 import com.example.springdemo.entities.Service;
@@ -20,22 +21,22 @@ public class ServiceController {
     public ServiceController(ServiceService ss){ this.sservice = ss;}
 
     @GetMapping()
-    public Set<Service> findAll(){
+    public Set<ServiceDTO> findAll(){
         return sservice.findAll();
     }
 
     @PostMapping()
-    public Integer insertService(@RequestBody Service service){
+    public Integer insert(@RequestBody ServiceDTO service){
         return sservice.insert(service);
     }
 
     @PutMapping()
-    public Service updateService(@RequestBody Service service) {
+    public Service update(@RequestBody ServiceDTO service) {
         return sservice.update(service);
     }
 
     @DeleteMapping()
-    public void delete(@RequestBody Service service){
+    public void delete(@RequestBody ServiceDTO service){
         sservice.delete(service);
     }
 

@@ -30,6 +30,9 @@ public class ServiceDTO {
         this.announcementId = announcementId;
     }
 
+    public ServiceDTO() {
+    }
+
     public Integer getId() {
         return id;
     }

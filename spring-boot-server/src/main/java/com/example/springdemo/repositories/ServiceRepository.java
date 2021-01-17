@@ -1,5 +1,6 @@
 package com.example.springdemo.repositories;
 
+import com.example.springdemo.entities.Announcement;
 import com.example.springdemo.entities.Company;
 import com.example.springdemo.entities.Freelancer;
 import com.example.springdemo.entities.Service;
@@ -35,4 +36,8 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
             "FROM Service s WHERE s.company=?1 " +
             "ORDER BY s.id")
     Set<Service> getAllPerCompany(Company c);
+
+    @Query(value = "SELECT s " +
+            "FROM Service s WHERE s.id=?1 ")
+    Service getById(Integer id);
 }

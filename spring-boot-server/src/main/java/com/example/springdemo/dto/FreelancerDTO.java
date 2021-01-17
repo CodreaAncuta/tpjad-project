@@ -1,50 +1,26 @@
-package com.example.springdemo.entities;
+package com.example.springdemo.dto;
 
-import javax.persistence.*;
+import com.example.springdemo.entities.Announcement;
+import com.example.springdemo.entities.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
+public class FreelancerDTO {
 
-
-@Entity
-@Table(name = "freelancer")
-public class Freelancer {
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(unique = true, nullable = false)
     private Integer id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(unique = true, nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private String password;
-
-    @Column(name = "area_of_expertise")
     private String areaOfExpertise;
-
-    @Column(name = "years_of_experience")
     private String yearsOfExperience;
-
     private String address;
     private String description;
     private Float rating;
+    private List<Integer> announcementsId;
+    private List<Integer> servicesId;
 
-    @OneToMany(mappedBy = "freelancer", fetch = FetchType.LAZY)
-    private List<Announcement> announcements;
-
-    @OneToMany(mappedBy = "freelancer", fetch = FetchType.LAZY)
-    private List<Service> services;
-
-    public Freelancer() {
-    }
-
-    public Freelancer(Integer id, String name, String email, String password, String areaOfExpertise, String yearsOfExperience, String address, String description, Float rating, List<Announcement> announcements, List<Service> services) {
+    public FreelancerDTO(Integer id, String name, String email, String password, String areaOfExpertise, String yearsOfExperience, String address, String description, Float rating, List<Integer> announcementsId, List<Integer> servicesId) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -54,12 +30,11 @@ public class Freelancer {
         this.address = address;
         this.description = description;
         this.rating = rating;
-        this.announcements = announcements;
-        this.services = services;
+        this.announcementsId = announcementsId;
+        this.servicesId = servicesId;
     }
 
-    public Freelancer(Integer id, String name, String email, String password, String areaOfExpertise, String yearsOfExperience, String address, String description, Float rating) {
-        this.id = id;
+    public FreelancerDTO(String name, String email, String password, String areaOfExpertise, String yearsOfExperience, String address, String description, Float rating, List<Integer> announcementsId, List<Integer> servicesId) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -68,8 +43,24 @@ public class Freelancer {
         this.address = address;
         this.description = description;
         this.rating = rating;
-        this.announcements = new ArrayList<>();
-        this.services = new ArrayList<>();
+        this.announcementsId = announcementsId;
+        this.servicesId = servicesId;
+    }
+
+    public FreelancerDTO(String name, String email, String password, String areaOfExpertise, String yearsOfExperience, String address, String description, Float rating) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.areaOfExpertise = areaOfExpertise;
+        this.yearsOfExperience = yearsOfExperience;
+        this.address = address;
+        this.description = description;
+        this.rating = rating;
+        this.announcementsId = new ArrayList<>();
+        this.servicesId = new ArrayList<>();
+    }
+
+    public FreelancerDTO() {
     }
 
     public Integer getId() {
@@ -144,19 +135,19 @@ public class Freelancer {
         this.rating = rating;
     }
 
-    public List<Announcement> getAnnouncements() {
-        return announcements;
+    public List<Integer> getAnnouncementsId() {
+        return announcementsId;
     }
 
-    public void setAnnouncements(List<Announcement> announcements) {
-        this.announcements = announcements;
+    public void setAnnouncementsId(List<Integer> announcementsId) {
+        this.announcementsId = announcementsId;
     }
 
-    public List<Service> getServices() {
-        return services;
+    public List<Integer> getServicesId() {
+        return servicesId;
     }
 
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setServicesId(List<Integer> servicesId) {
+        this.servicesId = servicesId;
     }
 }

@@ -1,5 +1,8 @@
 package com.example.springdemo.services;
 
+import com.example.springdemo.dto.ServiceDTO;
+import com.example.springdemo.dto.builders.FreelancerBuilder;
+import com.example.springdemo.dto.builders.ServiceBuilder;
 import com.example.springdemo.entities.Company;
 import com.example.springdemo.entities.Freelancer;
 import com.example.springdemo.entities.Service;
@@ -27,27 +30,30 @@ public class ServiceService {
         return service.get();
     }
 
-    public Set<Service> findAll(){
+    public Set<ServiceDTO> findAll(){
         Set<Service> services = serviceRepository.getAllOrdered();
-        return services;
+        return services.stream()
+                .map(ServiceBuilder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
     }
 
-    public Integer insert(Service service) {
+    public Integer insert(ServiceDTO service) {
+
         return serviceRepository
-                .save(service)
+                .save(ServiceBuilder.generateEntityFromDTO(service))
                 .getId();
     }
 
-    public Service update(Service service) {
+    public Service update(ServiceDTO service) {
 
-        Optional<Service> service1 = serviceRepository.findById(service.getId());
-        if(!service1.isPresent()){
+        Optional<Service> serviceOptional = serviceRepository.findById(service.getId());
+        if(!serviceOptional.isPresent()){
             return null;
         }
-        return serviceRepository.save(service);
+        return serviceRepository.save(ServiceBuilder.generateEntityFromDTO(service));
     }
 
-    public void delete(Service service){
+    public void delete(ServiceDTO service){
         this.serviceRepository.deleteById(service.getId());
     }
 

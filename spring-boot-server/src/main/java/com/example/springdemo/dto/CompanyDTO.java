@@ -1,43 +1,22 @@
-package com.example.springdemo.entities;
+package com.example.springdemo.dto;
 
-import javax.persistence.*;
+import com.example.springdemo.entities.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
+public class CompanyDTO {
 
-@Entity
-@Table(name = "company")
-public class Company {
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(unique = true, nullable = false)
     private Integer id;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(name = "email_contact", unique = true, nullable = false)
     private String emailContact;
-
-    @Column(nullable = false)
     private String password;
-
-    @Column(name = "area_of_work")
     private String areaOfWork;
-
     private String city;
-
     private String logo;
+    private List<Integer> servicesId;
 
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-    private List<Service> services;
-
-    public Company() {
-    }
-
-    public Company(Integer id, String name, String emailContact, String password, String areaOfWork, String city, String logo, List<Service> services) {
+    public CompanyDTO(Integer id, String name, String emailContact, String password, String areaOfWork, String city, String logo, List<Integer> servicesId) {
         this.id = id;
         this.name = name;
         this.emailContact = emailContact;
@@ -45,18 +24,30 @@ public class Company {
         this.areaOfWork = areaOfWork;
         this.city = city;
         this.logo = logo;
-        this.services = services;
+        this.servicesId = servicesId;
     }
 
-    public Company(Integer id, String name, String emailContact, String password, String areaOfWork, String city, String logo) {
-        this.id = id;
+    public CompanyDTO(String name, String emailContact, String password, String areaOfWork, String city, String logo, List<Integer> servicesId) {
         this.name = name;
         this.emailContact = emailContact;
         this.password = password;
         this.areaOfWork = areaOfWork;
         this.city = city;
         this.logo = logo;
-        this.services = new ArrayList<>();
+        this.servicesId = servicesId;
+    }
+
+    public CompanyDTO(String name, String emailContact, String password, String areaOfWork, String city, String logo) {
+        this.name = name;
+        this.emailContact = emailContact;
+        this.password = password;
+        this.areaOfWork = areaOfWork;
+        this.city = city;
+        this.logo = logo;
+        this.servicesId = new ArrayList<>();
+    }
+
+    public CompanyDTO() {
     }
 
     public Integer getId() {
@@ -115,11 +106,11 @@ public class Company {
         this.logo = logo;
     }
 
-    public List<Service> getServices() {
-        return services;
+    public List<Integer> getServicesId() {
+        return servicesId;
     }
 
-    public void setServices(List<Service> services) {
-        this.services = services;
+    public void setServicesId(List<Integer> servicesId) {
+        this.servicesId = servicesId;
     }
 }

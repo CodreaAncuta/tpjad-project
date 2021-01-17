@@ -19,16 +19,16 @@ public class Announcement {
     private String technology;
 
     @Column(name = "standard_price")
-    private String standardPrice;
+    private Integer standardPrice;
 
     @Column(name = "standard_duration")
-    private String standardDuration;
+    private Integer standardDuration;
 
     @Column(name = "premium_price")
-    private String premiumPrice;
+    private Integer premiumPrice;
 
     @Column(name = "premium_duration")
-    private String premiumDuration;
+    private Integer premiumDuration;
 
     @ManyToOne()
     @JoinColumn(name = "freelancer_id",  nullable = false)
@@ -41,7 +41,7 @@ public class Announcement {
     public Announcement() {
     }
 
-    public Announcement(Integer id, String title, String description, String category, String technology, String standardPrice, String standardDuration, String premiumPrice, String premiumDuration, Freelancer freelancer, Service service) {
+    public Announcement(Integer id, String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Freelancer freelancer, Service service) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -79,35 +79,35 @@ public class Announcement {
         this.description = description;
     }
 
-    public String getStandardPrice() {
+    public Integer getStandardPrice() {
         return standardPrice;
     }
 
-    public void setStandardPrice(String standardPrice) {
+    public void setStandardPrice(Integer standardPrice) {
         this.standardPrice = standardPrice;
     }
 
-    public String getStandardDuration() {
+    public Integer getStandardDuration() {
         return standardDuration;
     }
 
-    public void setStandardDuration(String standardDuration) {
+    public void setStandardDuration(Integer standardDuration) {
         this.standardDuration = standardDuration;
     }
 
-    public String getPremiumPrice() {
+    public Integer getPremiumPrice() {
         return premiumPrice;
     }
 
-    public void setPremiumPrice(String premiumPrice) {
+    public void setPremiumPrice(Integer premiumPrice) {
         this.premiumPrice = premiumPrice;
     }
 
-    public String getPremiumDuration() {
+    public Integer getPremiumDuration() {
         return premiumDuration;
     }
 
-    public void setPremiumDuration(String premiumDuration) {
+    public void setPremiumDuration(Integer premiumDuration) {
         this.premiumDuration = premiumDuration;
     }
 
@@ -135,11 +135,11 @@ public class Announcement {
         this.freelancer = freelancer;
     }
 
-    public Service getOrder() {
+    public Service getService() {
         return service;
     }
 
-    public void setOrder(Service service) {
+    public void setService(Service service) {
         this.service = service;
     }
 }
