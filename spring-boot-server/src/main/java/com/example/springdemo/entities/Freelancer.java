@@ -1,31 +1,19 @@
 package com.example.springdemo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 
 @Entity
 @Table(name = "freelancer")
-public class Freelancer {
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(unique = true, nullable = false)
-    private Integer id;
+public class Freelancer extends User {
 
     @Column(nullable = false)
     private String name;
-
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column(name = "area_of_expertise")
     private String areaOfExpertise;
@@ -49,10 +37,10 @@ public class Freelancer {
     }
 
     public Freelancer(Integer id, String name, String email, String password, String areaOfExpertise, String yearsOfExperience, String address, String description, Float rating, List<Announcement> announcements, List<Service> services) {
-        this.id = id;
+        this.setId(id);
+        this.setEmail(email);
+        this.setPassword(new BCryptPasswordEncoder().encode(password));
         this.name = name;
-        this.email = email;
-        this.password = password;
         this.areaOfExpertise = areaOfExpertise;
         this.yearsOfExperience = yearsOfExperience;
         this.address = address;
@@ -63,10 +51,10 @@ public class Freelancer {
     }
 
     public Freelancer(Integer id, String name, String email, String password, String areaOfExpertise, String yearsOfExperience, String address, String description, Float rating) {
-        this.id = id;
+        this.setId(id);
+        this.setEmail(email);
+        this.setPassword(new BCryptPasswordEncoder().encode(password));
         this.name = name;
-        this.email = email;
-        this.password = password;
         this.areaOfExpertise = areaOfExpertise;
         this.yearsOfExperience = yearsOfExperience;
         this.address = address;
@@ -76,36 +64,12 @@ public class Freelancer {
         this.services = new ArrayList<>();
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getAreaOfExpertise() {

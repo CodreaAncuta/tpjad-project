@@ -1,11 +1,8 @@
 package com.example.springdemo.services;
 
 import com.example.springdemo.dto.CompanyDTO;
-import com.example.springdemo.dto.FreelancerDTO;
 import com.example.springdemo.dto.builders.CompanyBuilder;
-import com.example.springdemo.dto.builders.FreelancerBuilder;
 import com.example.springdemo.entities.Company;
-import com.example.springdemo.entities.Freelancer;
 import com.example.springdemo.errorhandler.ResourceNotFoundException;
 import com.example.springdemo.repositories.CompanyRepository;
 import com.example.springdemo.repositories.ServiceRepository;
@@ -25,14 +22,14 @@ public class CompanyService {
     private static CompanyBuilder builder;
 
     @Autowired
-    public CompanyService(CompanyRepository cr, ServiceRepository sr){
+    public CompanyService(CompanyRepository cr, ServiceRepository sr) {
 
         companyRepository = cr;
         serviceRepository = sr;
         this.builder = new CompanyBuilder(serviceRepository);
     }
 
-    public Company findCompanyById(Integer id){
+    public Company findCompanyById(Integer id) {
         Optional<Company> companyOptional = companyRepository.findById(id);
         if (!companyOptional.isPresent()) {
             throw new ResourceNotFoundException("Company", "user id", id);
@@ -40,7 +37,7 @@ public class CompanyService {
         return companyOptional.get();
     }
 
-    public Set<CompanyDTO> findAll(){
+    public Set<CompanyDTO> findAll() {
         Set<Company> companies = companyRepository.getAllOrdered();
 
         return companies.stream()
@@ -58,14 +55,14 @@ public class CompanyService {
     public Company update(CompanyDTO cDTO) {
 
         Optional<Company> companyOptional = companyRepository.findById(cDTO.getId());
-        if(!companyOptional.isPresent()){
+        if (!companyOptional.isPresent()) {
             throw new ResourceNotFoundException("Company", "user id", cDTO.getId());
 
         }
         return companyRepository.save(builder.generateEntityFromDTO(cDTO));
     }
 
-    public void delete(CompanyDTO fDTO){
+    public void delete(CompanyDTO fDTO) {
         this.companyRepository.deleteById(fDTO.getId());
     }
 }

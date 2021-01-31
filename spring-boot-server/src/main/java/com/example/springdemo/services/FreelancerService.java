@@ -1,8 +1,6 @@
 package com.example.springdemo.services;
 
-import com.example.springdemo.dto.AnnouncementDTO;
 import com.example.springdemo.dto.FreelancerDTO;
-import com.example.springdemo.dto.builders.AnnouncementBuilder;
 import com.example.springdemo.dto.builders.FreelancerBuilder;
 import com.example.springdemo.entities.Announcement;
 import com.example.springdemo.entities.Freelancer;
@@ -28,14 +26,14 @@ public class FreelancerService {
     private FreelancerBuilder builder;
 
     @Autowired
-    public FreelancerService(FreelancerRepository fr,AnnouncementRepository ar,ServiceRepository sr){
+    public FreelancerService(FreelancerRepository fr, AnnouncementRepository ar, ServiceRepository sr) {
         freelancerRepository = fr;
         announcementRepository = ar;
         serviceRepository = sr;
         builder = new FreelancerBuilder(announcementRepository, serviceRepository);
     }
 
-    public Freelancer findFreelancerById(Integer id){
+    public Freelancer findFreelancerById(Integer id) {
         Optional<Freelancer> freelancerOptional = freelancerRepository.findById(id);
         if (!freelancerOptional.isPresent()) {
             throw new ResourceNotFoundException("Freelancer", "user id", id);
@@ -43,7 +41,7 @@ public class FreelancerService {
         return freelancerOptional.get();
     }
 
-    public Set<FreelancerDTO> findAll(){
+    public Set<FreelancerDTO> findAll() {
         Set<Freelancer> freelancers = freelancerRepository.getAllOrdered();
 
         return freelancers.stream()
@@ -61,25 +59,25 @@ public class FreelancerService {
     public Freelancer update(FreelancerDTO fDTO) {
 
         Optional<Freelancer> freelancerOptional = freelancerRepository.findById(fDTO.getId());
-        if(!freelancerOptional.isPresent()){
+        if (!freelancerOptional.isPresent()) {
             return null;
         }
         return freelancerRepository.save(builder.generateEntityFromDTO(fDTO));
     }
 
-    public void delete(FreelancerDTO fDTO){
+    public void delete(FreelancerDTO fDTO) {
         this.freelancerRepository.deleteById(fDTO.getId());
     }
 
-    public Freelancer addAnnouncement(Announcement announcement, Integer id){
+    public Freelancer addAnnouncement(Announcement announcement, Integer id) {
         Optional<Freelancer> freelancerOptional = freelancerRepository.findById(id);
-        if (freelancerOptional.isPresent()){
+        if (freelancerOptional.isPresent()) {
             Freelancer f = freelancerOptional.get();
             List<Announcement> announcements = f.getAnnouncements();
             announcements.add(announcement);
             f.setAnnouncements(announcements);
             return freelancerRepository.save(f);
-        }else{
+        } else {
             return null;
         }
     }

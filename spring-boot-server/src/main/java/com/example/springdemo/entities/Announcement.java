@@ -18,20 +18,11 @@ public class Announcement {
     private String category;
     private String technology;
 
-    @Column(name = "standard_price")
-    private Integer standardPrice;
-
-    @Column(name = "standard_duration")
-    private Integer standardDuration;
-
-    @Column(name = "premium_price")
-    private Integer premiumPrice;
-
-    @Column(name = "premium_duration")
-    private Integer premiumDuration;
+    private Integer price;
+    private Integer duration;
 
     @ManyToOne()
-    @JoinColumn(name = "freelancer_id",  nullable = false)
+    @JoinColumn(name = "freelancer_id", nullable = false)
     private Freelancer freelancer;
 
     @OneToOne(mappedBy = "announcement", cascade = CascadeType.ALL,
@@ -41,30 +32,26 @@ public class Announcement {
     public Announcement() {
     }
 
-    public Announcement(Integer id, String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Freelancer freelancer, Service service) {
+    public Announcement(Integer id, String title, String description, String category, String technology, Integer price, Integer duration, Freelancer freelancer, Service service) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.category = category;
         this.technology = technology;
-        this.standardPrice = standardPrice;
-        this.standardDuration = standardDuration;
-        this.premiumPrice = premiumPrice;
-        this.premiumDuration = premiumDuration;
+        this.price = price;
+        this.duration = duration;
         this.freelancer = freelancer;
         this.service = service;
     }
 
-    public Announcement(Integer id, String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Freelancer freelancer) {
+    public Announcement(Integer id, String title, String description, String category, String technology, Integer price, Integer duration, Freelancer freelancer) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.category = category;
         this.technology = technology;
-        this.standardPrice = standardPrice;
-        this.standardDuration = standardDuration;
-        this.premiumPrice = premiumPrice;
-        this.premiumDuration = premiumDuration;
+        this.price = price;
+        this.duration = duration;
         this.freelancer = freelancer;
     }
 
@@ -92,36 +79,20 @@ public class Announcement {
         this.description = description;
     }
 
-    public Integer getStandardPrice() {
-        return standardPrice;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setStandardPrice(Integer standardPrice) {
-        this.standardPrice = standardPrice;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-    public Integer getStandardDuration() {
-        return standardDuration;
+    public Integer getDuration() {
+        return duration;
     }
 
-    public void setStandardDuration(Integer standardDuration) {
-        this.standardDuration = standardDuration;
-    }
-
-    public Integer getPremiumPrice() {
-        return premiumPrice;
-    }
-
-    public void setPremiumPrice(Integer premiumPrice) {
-        this.premiumPrice = premiumPrice;
-    }
-
-    public Integer getPremiumDuration() {
-        return premiumDuration;
-    }
-
-    public void setPremiumDuration(Integer premiumDuration) {
-        this.premiumDuration = premiumDuration;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public String getCategory() {
