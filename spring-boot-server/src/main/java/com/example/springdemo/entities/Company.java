@@ -1,5 +1,6 @@
 package com.example.springdemo.entities;
 
+import com.example.springdemo.entities.roles.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -32,6 +33,7 @@ public class Company extends User {
         this.setId(id);
         this.setEmail(email);
         this.setPassword(new BCryptPasswordEncoder().encode(password));
+        this.setRole(Role.COMPANY);
         this.name = name;
         this.areaOfWork = areaOfWork;
         this.city = city;
@@ -43,6 +45,7 @@ public class Company extends User {
         this.setId(id);
         this.setEmail(email);
         this.setPassword(new BCryptPasswordEncoder().encode(password));
+        this.setRole(Role.COMPANY);
         this.name = name;
         this.areaOfWork = areaOfWork;
         this.city = city;
