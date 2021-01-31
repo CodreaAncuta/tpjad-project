@@ -27,16 +27,20 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Inte
     Set<Announcement> getAllPerService(Service f);
 
     @Query(value = "SELECT s " +
-            "FROM Announcement s " +
-            "ORDER BY s.standardPrice")
-    Set<Announcement> getAllByPrice();
-
-    @Query(value = "SELECT s " +
-            "FROM Announcement s " +
-            "ORDER BY s.standardDuration")
-    Set<Announcement> getAllByDuration();
-
-    @Query(value = "SELECT s " +
             "FROM Announcement s WHERE s.id=?1 ")
     Announcement getById(Integer id);
+
+    public Set<Announcement> findByCategoryContains(String category);
+
+    public Set<Announcement> findByTechnologyContains(String technology);
+
+    public Set<Announcement> findByTechnologyAndCategory(String technology, String category);
+
+    public Set<Announcement> findByPriceLessThanEqual(Integer price);
+
+    public Set<Announcement> findByPriceGreaterThanEqual(Integer price);
+
+    public Set<Announcement> findByPrice(Integer price);
+
+    public Set<Announcement> findByDuration(Integer duration);
 }

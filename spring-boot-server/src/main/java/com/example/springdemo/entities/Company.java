@@ -1,30 +1,18 @@
 package com.example.springdemo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 @Entity
 @Table(name = "company")
-public class Company {
-
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(unique = true, nullable = false)
-    private Integer id;
+public class Company extends User {
 
     @Column(nullable = false)
     private String name;
-
-    @Column(name = "email_contact", unique = true, nullable = false)
-    private String emailContact;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column(name = "area_of_work")
     private String areaOfWork;
@@ -40,34 +28,26 @@ public class Company {
     public Company() {
     }
 
-    public Company(Integer id, String name, String emailContact, String password, String areaOfWork, String city, String logo, List<Service> services) {
-        this.id = id;
+    public Company(Integer id, String name, String email, String password, String areaOfWork, String city, String logo, List<Service> services) {
+        this.setId(id);
+        this.setEmail(email);
+        this.setPassword(new BCryptPasswordEncoder().encode(password));
         this.name = name;
-        this.emailContact = emailContact;
-        this.password = password;
         this.areaOfWork = areaOfWork;
         this.city = city;
         this.logo = logo;
         this.services = services;
     }
 
-    public Company(Integer id, String name, String emailContact, String password, String areaOfWork, String city, String logo) {
-        this.id = id;
+    public Company(Integer id, String name, String email, String password, String areaOfWork, String city, String logo) {
+        this.setId(id);
+        this.setEmail(email);
+        this.setPassword(new BCryptPasswordEncoder().encode(password));
         this.name = name;
-        this.emailContact = emailContact;
-        this.password = password;
         this.areaOfWork = areaOfWork;
         this.city = city;
         this.logo = logo;
         this.services = new ArrayList<>();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -76,22 +56,6 @@ public class Company {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmailContact() {
-        return emailContact;
-    }
-
-    public void setEmailContact(String emailContact) {
-        this.emailContact = emailContact;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getAreaOfWork() {

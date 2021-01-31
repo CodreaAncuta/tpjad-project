@@ -1,8 +1,5 @@
 package com.example.springdemo.dto;
 
-import com.example.springdemo.entities.Freelancer;
-import com.example.springdemo.entities.Service;
-
 public class AnnouncementDTO {
 
     private Integer id;
@@ -11,62 +8,52 @@ public class AnnouncementDTO {
     private String description;
     private String category;
     private String technology;
-    private Integer standardPrice;
-    private Integer standardDuration;
-    private Integer premiumPrice;
-    private Integer premiumDuration;
+    private Integer price;
+    private Integer duration;
     private Integer freelancerId;
     private Integer serviceId;
 
-    public AnnouncementDTO(Integer id, String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Integer freelancerId, Integer serviceId) {
+    public AnnouncementDTO(Integer id, String title, String description, String category, String technology, Integer price, Integer duration, Integer freelancerId, Integer serviceId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.category = category;
         this.technology = technology;
-        this.standardPrice = standardPrice;
-        this.standardDuration = standardDuration;
-        this.premiumPrice = premiumPrice;
-        this.premiumDuration = premiumDuration;
+        this.price = price;
+        this.duration = duration;
         this.freelancerId = freelancerId;
         this.serviceId = serviceId;
     }
 
-    public AnnouncementDTO(String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Integer freelancerId, Integer serviceId) {
+    public AnnouncementDTO(String title, String description, String category, String technology, Integer price, Integer duration, Integer freelancerId, Integer serviceId) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.technology = technology;
-        this.standardPrice = standardPrice;
-        this.standardDuration = standardDuration;
-        this.premiumPrice = premiumPrice;
-        this.premiumDuration = premiumDuration;
+        this.price = price;
+        this.duration = duration;
         this.freelancerId = freelancerId;
         this.serviceId = serviceId;
     }
 
-    public AnnouncementDTO(String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Integer freelancerId) {
+    public AnnouncementDTO(String title, String description, String category, String technology, Integer price, Integer duration, Integer freelancerId) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.technology = technology;
-        this.standardPrice = standardPrice;
-        this.standardDuration = standardDuration;
-        this.premiumPrice = premiumPrice;
-        this.premiumDuration = premiumDuration;
+        this.price = price;
+        this.duration = duration;
         this.freelancerId = freelancerId;
     }
 
-    public AnnouncementDTO(Integer id, String title, String description, String category, String technology, Integer standardPrice, Integer standardDuration, Integer premiumPrice, Integer premiumDuration, Integer freelancerId) {
+    public AnnouncementDTO(Integer id, String title, String description, String category, String technology, Integer price, Integer duration, Integer freelancerId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.category = category;
         this.technology = technology;
-        this.standardPrice = standardPrice;
-        this.standardDuration = standardDuration;
-        this.premiumPrice = premiumPrice;
-        this.premiumDuration = premiumDuration;
+        this.price = price;
+        this.duration = duration;
         this.freelancerId = freelancerId;
     }
 
@@ -113,36 +100,20 @@ public class AnnouncementDTO {
         this.technology = technology;
     }
 
-    public Integer getStandardPrice() {
-        return standardPrice;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setStandardPrice(Integer standardPrice) {
-        this.standardPrice = standardPrice;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-    public Integer getStandardDuration() {
-        return standardDuration;
+    public Integer getDuration() {
+        return duration;
     }
 
-    public void setStandardDuration(Integer standardDuration) {
-        this.standardDuration = standardDuration;
-    }
-
-    public Integer getPremiumPrice() {
-        return premiumPrice;
-    }
-
-    public void setPremiumPrice(Integer premiumPrice) {
-        this.premiumPrice = premiumPrice;
-    }
-
-    public Integer getPremiumDuration() {
-        return premiumDuration;
-    }
-
-    public void setPremiumDuration(Integer premiumDuration) {
-        this.premiumDuration = premiumDuration;
+    public void setDuration(Integer duration) {
+        this.duration = duration;
     }
 
     public Integer getFreelancerId() {

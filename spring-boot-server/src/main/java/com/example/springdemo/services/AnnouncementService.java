@@ -10,6 +10,7 @@ import com.example.springdemo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,14 +25,14 @@ public class AnnouncementService {
     private AnnouncementBuilder builder;
 
     @Autowired
-    public AnnouncementService(AnnouncementRepository ar,ServiceRepository sr, FreelancerRepository fr){
+    public AnnouncementService(AnnouncementRepository ar, ServiceRepository sr, FreelancerRepository fr) {
         this.announcementRepository = ar;
         this.serviceRepository = sr;
         this.freelancerRepository = fr;
         this.builder = new AnnouncementBuilder(freelancerRepository, serviceRepository);
     }
 
-    public Announcement findAnnouncementById(Integer id){
+    public Announcement findAnnouncementById(Integer id) {
         Optional<Announcement> announcementOptional = announcementRepository.findById(id);
         if (!announcementOptional.isPresent()) {
             throw new ResourceNotFoundException("Announcement", "user id", id);
@@ -39,8 +40,54 @@ public class AnnouncementService {
         return announcementOptional.get();
     }
 
-    public Set<AnnouncementDTO> findAll(){
+    public Set<AnnouncementDTO> findAll() {
         Set<Announcement> announcements = announcementRepository.getAllOrdered();
+        return announcements.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AnnouncementDTO> findByCategory(String category) {
+        Set<Announcement> announcements = announcementRepository.findByCategoryContains(category);
+        return announcements.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AnnouncementDTO> findByTechnology(String technology) {
+        Set<Announcement> announcements = announcementRepository.findByTechnologyContains(technology);
+        return announcements.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AnnouncementDTO> findByTechnologyAndCategory(String technology, String category) {
+        Set<Announcement> announcements = announcementRepository.findByTechnologyAndCategory(technology, category);
+        return announcements.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AnnouncementDTO> findByPrice(Integer price, String operator) {
+        Set<Announcement> announcements = new HashSet<>();
+        switch (operator) {
+            case "le":
+                announcements = announcementRepository.findByPriceLessThanEqual(price);
+                break;
+            case "ge":
+                announcements = announcementRepository.findByPriceGreaterThanEqual(price);
+                break;
+            default:
+                announcements = announcementRepository.findByPrice(price);
+        }
+
+        return announcements.stream()
+                .map(builder::generateDTOFromEntity)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AnnouncementDTO> findByDuration(Integer duration) {
+        Set<Announcement> announcements = announcementRepository.findByDuration(duration);
         return announcements.stream()
                 .map(builder::generateDTOFromEntity)
                 .collect(Collectors.toSet());
@@ -54,14 +101,13 @@ public class AnnouncementService {
 
     public Announcement update(AnnouncementDTO aDTO) {
         Optional<Announcement> announcementOptional = announcementRepository.findById(aDTO.getId());
-        if(!announcementOptional.isPresent()){
+        if (!announcementOptional.isPresent()) {
             return null;
         }
         return announcementRepository.save(builder.generateEntityFromDTO(aDTO));
     }
 
-    public void delete(AnnouncementDTO aDTO){
+    public void delete(AnnouncementDTO aDTO) {
         this.announcementRepository.deleteById(aDTO.getId());
     }
-
 }
