@@ -1,6 +1,7 @@
 import React from 'react';
 import * as API_USERS from "../user-data/user/api/user-api";
 import userRoles from "../commons/constants/enums";
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 const styleInfoBox = {
     backgroundColor: "#12c2e9",
@@ -56,12 +57,13 @@ class LoginPage extends React.Component {
             console.log(result);
 
             if(result !== null && (status === 200 || status ===201)){
-                console.log("Successfully authenticated user with id: " + result.id);
-                console.log(result.role)
+                console.log("Successfully authenticated user with access_token: " + result.access_token);
 
-                localStorage.setItem('id', result.id);
-                localStorage.setItem('role', result.role);
-                console.log("id: " + localStorage.getItem('id'));
+                localStorage.setItem('access_token', result.access_token);
+                localStorage.setItem('username', user.username);
+                // localStorage.setItem('refresh_token', result.refresh_token);
+                // localStorage.setItem('role', result.role);
+                console.log("username: " + localStorage.getItem('username'));
 
 
             } else {
@@ -82,9 +84,11 @@ class LoginPage extends React.Component {
 
         let userSecrets = {
             username: this.state.username,
-            password: this.state.password
+            password: this.state.password,
+            grant_type: "password"
         }
 
+        console.log(userSecrets);
         this.authenticateUser(userSecrets);
         console.log("ROLE " + localStorage.getItem('role'))
     }

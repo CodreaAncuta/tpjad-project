@@ -3,17 +3,42 @@ import RestApiClient from "../../../commons/api/rest-client";
 
 
 const endpoint = {
-    user_endpoint: '/user/'
+    user_endpoint: '/user',
+    oauth_endpoint: '/oauth/token'
 };
 
 function authenticateUser(userSecrets, callback){
-    let request = new Request(HOST.backend_api + endpoint.user_endpoint , {
+    var details = {
+        'username': userSecrets.username,
+        'password': userSecrets.password,
+        'grant_type': userSecrets.grant_type
+    };
+    
+    var formBody = [];
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    let request = new Request(HOST.backend_api + endpoint.oauth_endpoint , {
         method: 'POST',
         headers : {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': '*/*',
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            'Authorization': 'Basic Zm9vQ2xpZW50SWQ6c2VjcmV0',
         },
-        body: JSON.stringify(userSecrets)
+        body: formBody
+    });
+
+    console.log("URL: " + request.url);
+    RestApiClient.performRequest(request, callback);
+}
+
+function getUserByUsername(params, callback){
+    let request = new Request(HOST.backend_api + endpoint.user_endpoint + params.username, {
+        method: 'GET'
     });
 
     console.log("URL: " + request.url);
@@ -21,5 +46,6 @@ function authenticateUser(userSecrets, callback){
 }
 
 export {
-   authenticateUser
+   authenticateUser,
+   getUserByUsername
 };
