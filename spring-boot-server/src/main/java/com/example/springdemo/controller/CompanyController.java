@@ -37,9 +37,9 @@ public class CompanyController {
         return companyService.update(c);
     }
 
-    @DeleteMapping()
-    public void delete(@RequestBody CompanyDTO c){
-        companyService.delete(c);
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") Integer id){
+        companyService.delete(id);
     }
 
     @GetMapping(value = "/{id}")
