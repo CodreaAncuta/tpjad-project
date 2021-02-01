@@ -4,6 +4,7 @@ import com.example.springdemo.dto.ServiceDTO;
 import com.example.springdemo.entities.Company;
 import com.example.springdemo.entities.Freelancer;
 import com.example.springdemo.entities.Service;
+import com.example.springdemo.services.CompanyService;
 import com.example.springdemo.services.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,13 @@ import java.util.Set;
 public class ServiceController {
 
     private final ServiceService sservice;
+    private final CompanyService companyService;
 
     @Autowired
-    public ServiceController(ServiceService ss){ this.sservice = ss;}
+    public ServiceController(ServiceService ss, CompanyService cs){
+        this.sservice = ss;
+        this.companyService = cs;
+    }
 
     @GetMapping()
     public Set<ServiceDTO> findAll(){
@@ -51,8 +56,9 @@ public class ServiceController {
         return sservice.getServicesByFreelancer(f);
     }
 
-    @GetMapping(value = "/companyServices")
-    public Set<ServiceDTO> getServicesByCompany(@RequestBody Company c){
+    @GetMapping(value = "/companyServices/{id}")
+    public Set<ServiceDTO> getServicesByCompany(@PathVariable("id") Integer id){
+        Company c = this.companyService.findCompanyById(id);
         return sservice.getServicesByCompany(c);
     }
 
