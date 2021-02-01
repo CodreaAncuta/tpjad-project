@@ -73,6 +73,27 @@ class LoginPage extends React.Component {
         });
     }
 
+    getUser(username){
+        let params = {
+            email: username
+        };
+
+        return API_USERS.getUserByUsername(params, (result, status, error) => {
+            console.log(result);
+
+            if(result !== null && (status === 200 || status ===201)){
+                console.log("email " + result.email);
+                localStorage.setItem('role', result.role);
+                console.log("role: " + localStorage.getItem('role'));
+
+
+            } else {
+                this.state.errorStatus = status;
+                this.error = error;
+            }
+        });
+    }
+
     handleLogin(){
         
         console.log(this.state.username);
@@ -90,6 +111,7 @@ class LoginPage extends React.Component {
 
         console.log(userSecrets);
         this.authenticateUser(userSecrets);
+        this.getUser(userSecrets.username);
         console.log("ROLE " + localStorage.getItem('role'))
     }
 
