@@ -64,8 +64,6 @@ class CompanyStatus extends React.Component{
                 this.company = result;
                 this.forceUpdate();
             } else {
-                this.state.errorStatus = status;
-                this.state.error = err;
                 this.forceUpdate();
             }
         });
@@ -107,7 +105,7 @@ class CompanyStatus extends React.Component{
     }
 
     componentWillMount(){
-        let i = this.props.match.params;
+        let i = this.props.id;
         if(i!=null){
            this.compId = i;
         }

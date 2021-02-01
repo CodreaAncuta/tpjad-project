@@ -13,6 +13,7 @@ import HomePatient from './components/home-patient';
 import HomeDoctor from './components/home-doctor';
 import userRoles from "./commons/constants/enums";
 import styles from './commons/styles/project-style.css';
+import CompanyPage from './company-data/company-page';
 
 class App extends React.Component {
     render() {
@@ -23,10 +24,26 @@ class App extends React.Component {
                     <Switch>
                         <Route exact={true} component={LoginPage} path="/" />
 
+                        <Route
+                            exact
+                            path="/company/:id"
+                            render = {props => 
+                            <CompanyPage {...props} 
+                            /> } 
+                        />
+
                         {localStorage.getItem("role") === userRoles.CAREGIVER && <Route
                             exact
                             path='/caregiver'
                             render={() => <CaregiverPage />}
+                        />}
+
+                        {localStorage.getItem("role") === userRoles.COMPANY && <Route
+                            exact
+                            path='/company/:id'
+                            render = {props => 
+                            <CompanyPage {...props} 
+                            /> }
                         />}
 
                         {localStorage.getItem("role") === userRoles.PATIENT && <Route

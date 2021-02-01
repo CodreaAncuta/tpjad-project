@@ -82,7 +82,6 @@ class CompanyForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleGet = this.handleGet.bind(this);
 
     }
 
@@ -122,7 +121,7 @@ class CompanyForm extends React.Component {
     }
 
     componentWillMount(){
-        let i = this.props.match.params;
+        let i = this.props.id;
         if(i!=null){
            this.compId = i;
         }
@@ -260,7 +259,7 @@ class CompanyForm extends React.Component {
                         placeholder={this.state.formControls.companyId.placeholder}
                         value={this.state.formControls.companyId.value}
                         onChange={this.handleChange}
-                        touched={this.state.formControls.companyId.touched}
+                        touched={this.state.formControls.companyId.toString()}
                     />
                     <br />
                     <p> Name: </p>
@@ -269,7 +268,7 @@ class CompanyForm extends React.Component {
                         placeholder={this.state.formControls.name.placeholder}
                         value={this.state.formControls.name.value}
                         onChange={this.handleChange}
-                        touched={this.state.formControls.name.touched}
+                        touched={this.state.formControls.name.toString()}
                     />
                     <br />
                     <p> Email: </p>
@@ -278,7 +277,7 @@ class CompanyForm extends React.Component {
                         placeholder={this.state.formControls.email.placeholder}
                         value={this.state.formControls.email.value}
                         onChange={this.handleChange}
-                        touched={this.state.formControls.email.touched}
+                        touched={this.state.formControls.email.toString()}
                     />
                     <br />
                     <p> Password: </p>
@@ -287,7 +286,7 @@ class CompanyForm extends React.Component {
                         placeholder={this.state.formControls.password.placeholder}
                         value={this.state.formControls.password.value}
                         onChange={this.handleChange}
-                        touched={this.state.formControls.password.touched}
+                        touched={this.state.formControls.password.toString()}
                     />
                     <br />
                     <p> Area of work: </p>
@@ -296,7 +295,7 @@ class CompanyForm extends React.Component {
                         placeholder={this.state.formControls.areaOfWork.placeholder}
                         value={this.state.formControls.areaOfWork.value}
                         onChange={this.handleChange}
-                        touched={this.state.formControls.areaOfWork.touched}
+                        touched={this.state.formControls.areaOfWork.toString()}
                     />
                     <br />
                     <p> City: </p>
@@ -305,7 +304,7 @@ class CompanyForm extends React.Component {
                         placeholder={this.state.formControls.city.placeholder}
                         value={this.state.formControls.city.value}
                         onChange={this.handleChange}
-                        touched={this.state.formControls.city.touched}
+                        touched={this.state.formControls.city.toString()}
                     />
                     <br />
                     <div>
@@ -313,8 +312,6 @@ class CompanyForm extends React.Component {
                             onClick={this.handleSubmit}>
                             Create
                         </Button>
-                        {this.state.errorStatus > 0 &&
-                            <APIResponseErrorMessage errorStatus={this.state.errorStatus} error={this.state.error} />}
 
                         <Button
                             onClick={this.handleGet}>
