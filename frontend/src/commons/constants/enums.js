@@ -1,9 +1,8 @@
 import React from "react";
 
 let userRoles = {
-    DOCTOR: "DOCTOR",
-    CAREGIVER: "CAREGIVER",
-    PATIENT: "PATIENT"
+    FREELANCER: "FREELANCER",
+    COMPANY: "COMPANY"
 };
 
 export default userRoles;

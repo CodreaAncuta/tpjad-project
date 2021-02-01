@@ -2,7 +2,7 @@ import React from 'react';
 import APIResponseErrorMessage from "../commons/errorhandling/api-response-error-message";
 import { Card, Col, Row } from 'reactstrap';
 import Table from "../commons/tables/table"
-import * as API_CAREGIVER from "../caregiver-data/caregiver/api/caregiver-api"
+import * as API_ANNOUNCEMENTS from "../announcement-data/announcement/api/announcement-api"
 
 const columns = [
     {
@@ -10,8 +10,8 @@ const columns = [
         accessor: 'name',
     },
     {
-        Header: 'Patient Id',
-        accessor: 'patientId',
+        Header: 'Announcement Id',
+        accessor: 'announcementId',
     },
 
 ];
@@ -21,11 +21,11 @@ const filters = [
         accessor: 'name',
     },
     {
-        accessor: 'patientId',
+        accessor: 'announcementId',
     }
 ];
 
-class CaregiverPage extends React.Component {
+class AnnouncementPage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -51,33 +51,33 @@ class CaregiverPage extends React.Component {
     }
 
     componentDidMount() {
-        this.getCaregiverByUserId(localStorage.getItem('id'));
+        // this.getCaregiverByUserId(localStorage.getItem('id'));
     }
 
-    getCaregiverByUserId(id) {
-        console.log("ID ", id);
-        return API_CAREGIVER.getCaregiverByUserId(id, (result, status, error) => {
-            console.log(result);
+    // getCaregiverByUserId(id) {
+    //     console.log("ID ", id);
+    //     return API_ANNOUNCEMENT.getCaregiverByUserId(id, (result, status, error) => {
+    //         console.log(result);
 
-            if(result != null && (status === 200 || status ===201)){
-                console.log("Successfully got caregiver with id: " + result.id);
-                this.fetchPatients(result.id);
-            } else {
-                this.state.errorStatus = status;
-                this.error = error;
-            }
-        });
-    }
+    //         if(result != null && (status === 200 || status ===201)){
+    //             console.log("Successfully got caregiver with id: " + result.id);
+    //             this.fetchPatients(result.id);
+    //         } else {
+    //             this.state.errorStatus = status;
+    //             this.error = error;
+    //         }
+    //     });
+    // }
 
-    fetchPatients(id) {
+    fetchAnnouncements(id) {
         console.log("In storage: " + localStorage.getItem('id'));
         
-        return API_CAREGIVER.getPatientsForCaregiver(id, (result, status, err) => {
+        return API_ANNOUNCEMENTS.getAnnouncements((result, status, err) => {
             console.log(result);
             if (result !== null && status === 200) {
                 result.forEach(x => {
                     this.tableData.push({
-                        patientId: x.id,
+                        announcementId: x.id,
                         name: x.name
                     });
                 });
@@ -122,4 +122,4 @@ class CaregiverPage extends React.Component {
 
 }
 
-export default CaregiverPage;
+export default AnnouncementPage;
