@@ -26,10 +26,10 @@ class App extends React.Component {
 
                         <Route
                             exact
-                            path="/company/:id"
-                            render = {props => 
-                            <CompanyPage {...props} 
-                            /> } 
+                            path="/company/"
+                            render = {() => 
+                            <CompanyPage 
+                            /> }
                         />
 
                         {localStorage.getItem("role") === userRoles.CAREGIVER && <Route

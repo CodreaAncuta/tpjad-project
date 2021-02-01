@@ -40,16 +40,14 @@ class LoginPage extends React.Component {
 
     renderRedirect = (role) => {
 
-        if (this.state.loginPressed && role == userRoles.DOCTOR) {
+        if (this.state.loginPressed && (role == userRoles.FREELANCER || role == userRoles.COMPANY)) {
             console.log("LOGIN PRESSED, LOGGED " + role)
-            window.location.href = '/doctor';
-        } else if (this.state.loginPressed && role == userRoles.PATIENT){
-            console.log("LOGIN PRESSED, LOGGED " + role)
-            window.location.href = '/patient';
-        } else if (this.state.loginPressed  && role == userRoles.CAREGIVER){
-            console.log("LOGIN PRESSED, LOGGED " + role)
-            window.location.href = '/caregiver';
+            window.location.href = '/wow';
         }
+        // } else if (this.state.loginPressed && role == userRoles.COMPANY){
+        //     console.log("LOGIN PRESSED, LOGGED " + role)
+        //     window.location.href = '/announcementsPage';
+        // } 
       }
 
     authenticateUser(user){
@@ -65,6 +63,27 @@ class LoginPage extends React.Component {
                 // localStorage.setItem('role', result.role);
                 console.log("username: " + localStorage.getItem('username'));
 
+
+            } else {
+                this.state.errorStatus = status;
+                this.error = error;
+            }
+        });
+    }
+
+    getUser(username){
+        let params = {
+            email: username
+        };
+
+        return API_USERS.getUserByUsername(params, (result, status, error) => {
+            console.log(result);
+
+            if(result !== null && (status === 200 || status ===201)){
+                console.log("email " + result.email);
+                localStorage.setItem('role', result.role);
+                localStorage.setItem('userId', result.id);
+                console.log("role: " + localStorage.getItem('role'));
 
             } else {
                 this.state.errorStatus = status;
@@ -90,6 +109,7 @@ class LoginPage extends React.Component {
 
         console.log(userSecrets);
         this.authenticateUser(userSecrets);
+        this.getUser(userSecrets.username);
         console.log("ROLE " + localStorage.getItem('role'))
     }
 

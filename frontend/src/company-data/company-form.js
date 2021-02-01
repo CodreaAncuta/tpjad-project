@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from "react-bootstrap/Button";
 import * as API_COMPANY from "./api/company-api";
+import './fields/fields.css';
 
 import APIResponseErrorMessage from "../commons/errorhandling/api-response-error-message";
 
@@ -121,15 +122,21 @@ class CompanyForm extends React.Component {
     }
 
     componentWillMount(){
-        let i = this.props.id;
-        if(i!=null){
-           this.compId = i;
-        }
+        
     }
 
     componentDidMount() {
+
+        let i = localStorage.getItem("userId");
+        if(i!=null){
+           this.compId = i;
+        }
+
+        console.log("ID COMP: "+ i);
+
         if (this.compId != null){
             this.fetchCompanyInfo();
+            console.log(this.company);
             if (this.company != null){
                 this.fetchServices();
             }
@@ -247,75 +254,94 @@ class CompanyForm extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="companyForm">
                 <form onSubmit={this.handleSubmit}>
 
                     <h1>MANAGE COMPANY PROFILE</h1>
                     
                     <br />
-                    <p> Id: </p>
-                    <input name="companyId"
-                        className="form-control"
-                        placeholder={this.state.formControls.companyId.placeholder}
-                        value={this.state.formControls.companyId.value}
-                        onChange={this.handleChange}
-                        touched={this.state.formControls.companyId.toString()}
-                    />
+
+                    <div className="form-group">
+                        <p className="cformLabel"> Id: </p>
+                        <input name="companyId"
+                            className="form-control"
+                            placeholder={this.state.formControls.companyId.placeholder}
+                            value={this.state.formControls.companyId.value}
+                            onChange={this.handleChange}
+                            touched={this.state.formControls.companyId.toString()}
+                        />
+                    </div>
+
                     <br />
-                    <p> Name: </p>
-                    <input name="name"
-                        className="form-control"
-                        placeholder={this.state.formControls.name.placeholder}
-                        value={this.state.formControls.name.value}
-                        onChange={this.handleChange}
-                        touched={this.state.formControls.name.toString()}
-                    />
+
+                    <div className="form-group">
+                        <p className="cformLabel"> Name: </p>
+                        <input name="name"
+                            className="form-control"
+                            placeholder={this.state.formControls.name.placeholder}
+                            value={this.state.formControls.name.value}
+                            onChange={this.handleChange}
+                            touched={this.state.formControls.name.toString()}
+                        />
+                    </div>
+
                     <br />
-                    <p> Email: </p>
-                    <input name="email"
-                        className="form-control"
-                        placeholder={this.state.formControls.email.placeholder}
-                        value={this.state.formControls.email.value}
-                        onChange={this.handleChange}
-                        touched={this.state.formControls.email.toString()}
-                    />
+
+                    <div className="form-group">
+                        <p className="cformLabel"> Email: </p>
+                        <input name="email"
+                            className="form-control"
+                            placeholder={this.state.formControls.email.placeholder}
+                            value={this.state.formControls.email.value}
+                            onChange={this.handleChange}
+                            touched={this.state.formControls.email.toString()}
+                        />
+                    </div>
+
                     <br />
-                    <p> Password: </p>
-                    <input name="password"
-                        className="form-control"
-                        placeholder={this.state.formControls.password.placeholder}
-                        value={this.state.formControls.password.value}
-                        onChange={this.handleChange}
-                        touched={this.state.formControls.password.toString()}
-                    />
+
+                    <div className="form-group">
+                        <p className="cformLabel"> Password: </p>
+                        <input name="password"
+                            className="form-control"
+                            placeholder={this.state.formControls.password.placeholder}
+                            value={this.state.formControls.password.value}
+                            onChange={this.handleChange}
+                            touched={this.state.formControls.password.toString()}
+                        />
+                    </div>
+
                     <br />
-                    <p> Area of work: </p>
-                    <input name="areaOfWork"
-                        className="form-control"
-                        placeholder={this.state.formControls.areaOfWork.placeholder}
-                        value={this.state.formControls.areaOfWork.value}
-                        onChange={this.handleChange}
-                        touched={this.state.formControls.areaOfWork.toString()}
-                    />
+
+                    <div className="form-group">
+                        <p className="cformLabel"> Area of work: </p>
+                        <input name="areaOfWork"
+                            className="form-control"
+                            placeholder={this.state.formControls.areaOfWork.placeholder}
+                            value={this.state.formControls.areaOfWork.value}
+                            onChange={this.handleChange}
+                            touched={this.state.formControls.areaOfWork.toString()}
+                        />
+                    </div>
+
                     <br />
-                    <p> City: </p>
-                    <input name="city"
-                        className="form-control"
-                        placeholder={this.state.formControls.city.placeholder}
-                        value={this.state.formControls.city.value}
-                        onChange={this.handleChange}
-                        touched={this.state.formControls.city.toString()}
-                    />
+
+                    <div className="form-group">
+                        <p className="cformLabel"> City: </p>
+                        <input name="city"
+                            className="form-control"
+                            placeholder={this.state.formControls.city.placeholder}
+                            value={this.state.formControls.city.value}
+                            onChange={this.handleChange}
+                            touched={this.state.formControls.city.toString()}
+                        />
+                    </div>
                     <br />
-                    <div>
+                    <div className="form-buttons">
+
                         <Button
                             onClick={this.handleSubmit}>
                             Create
-                        </Button>
-
-                        <Button
-                            onClick={this.handleGet}>
-                            Get
                         </Button>
 
                         <Button

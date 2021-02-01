@@ -106,6 +106,7 @@ class CompanyStatus extends React.Component{
 
     componentWillMount(){
         let i = this.props.id;
+        console.log(this.props);
         if(i!=null){
            this.compId = i;
         }

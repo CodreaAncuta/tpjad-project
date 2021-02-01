@@ -3,7 +3,7 @@ import RestApiClient from "../../../commons/api/rest-client";
 
 
 const endpoint = {
-    user_endpoint: '/user',
+    user_endpoint: '/user/',
     oauth_endpoint: '/oauth/token'
 };
 
@@ -37,8 +37,11 @@ function authenticateUser(userSecrets, callback){
 }
 
 function getUserByUsername(params, callback){
-    let request = new Request(HOST.backend_api + endpoint.user_endpoint + params.username, {
-        method: 'GET'
+    let request = new Request(HOST.backend_api + endpoint.user_endpoint + params.email, {
+        method: 'GET',
+        headers : {
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+        }
     });
 
     console.log("URL: " + request.url);
