@@ -12,18 +12,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column
     private String email;
-
-    @Column
     private String password;
-
-    @Column
-    private Role role;
-
     private Long createdTime;
     private Long updatedTime;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User() {
     }
