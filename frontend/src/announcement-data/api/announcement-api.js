@@ -1,5 +1,5 @@
-import {HOST} from '../../../commons/hosts';
-import RestApiClient from "../../../commons/api/rest-client";
+import {HOST} from '../../commons/hosts';
+import RestApiClient from "../../commons/api/rest-client";
 
 
 const endpoint = {
@@ -12,7 +12,7 @@ function getAnnouncements(callback) {
     let request = new Request(HOST.backend_api + endpoint.announcement_endpoint, {
         method: 'GET',
         headers : {
-            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
         }
     });
     console.log(request.url);
@@ -27,7 +27,7 @@ function getAnnouncementsByCategory(params, callback) {
     let request = new Request(HOST.backend_api + endpoint.announcement_endpoint + '?' + requestParams, {
         method: 'GET',
         headers : {
-            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
         }
     });
     console.log(request.url);
@@ -42,7 +42,7 @@ function getAnnouncementsByTechnology(params, callback) {
     let request = new Request(HOST.backend_api + endpoint.announcement_endpoint + '?' + requestParams, {
         method: 'GET',
         headers : {
-            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
         }
     });
     console.log(request.url);
@@ -53,7 +53,7 @@ function getAnnouncementsByDuration(duration, callback) {
     let request = new Request(HOST.backend_api + endpoint.announcement_duration_endpoint + '/' + duration, {
         method: 'GET',
         headers : {
-            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
         }
     });
     console.log(request.url);
@@ -66,10 +66,21 @@ function getAnnouncementsByPrice(params, callback) {
         operator: params.operator
     })
 
-    let request = new Request(HOST.backend_api + endpoint.announcement_duration_endpoint + '?' + requestParams, {
+    let request = new Request(HOST.backend_api + endpoint.announcement_price_endpoint + '?' + requestParams, {
         method: 'GET',
         headers : {
-            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+    });
+    console.log(request.url);
+    RestApiClient.performRequest(request, callback);
+}
+
+function getAnnouncementById(announcementId, callback) {
+    let request = new Request(HOST.backend_api + endpoint.announcement_endpoint + '/' + announcementId, {
+        method: 'GET',
+        headers : {
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
         }
     });
     console.log(request.url);
@@ -81,5 +92,6 @@ export {
     getAnnouncementsByCategory,
     getAnnouncementsByTechnology,
     getAnnouncementsByDuration,
-    getAnnouncementsByPrice
+    getAnnouncementsByPrice,
+    getAnnouncementById
 };

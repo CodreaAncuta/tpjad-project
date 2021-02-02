@@ -1,5 +1,5 @@
 import React from 'react';
-import * as API_USERS from "../user-data/user/api/user-api";
+import * as API_USERS from "./api/user-api";
 import userRoles from "../commons/constants/enums";
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
@@ -39,16 +39,11 @@ class LoginPage extends React.Component {
     }
 
     renderRedirect = (role) => {
-
         if (this.state.loginPressed && (role == userRoles.FREELANCER || role == userRoles.COMPANY)) {
             console.log("LOGIN PRESSED, LOGGED " + role)
-            window.location.href = '/wow';
+            window.location.href = '/announcements';
         }
-        // } else if (this.state.loginPressed && role == userRoles.COMPANY){
-        //     console.log("LOGIN PRESSED, LOGGED " + role)
-        //     window.location.href = '/announcementsPage';
-        // } 
-      }
+    }
 
     authenticateUser(user){
         return API_USERS.authenticateUser(user, (result, status, error) => {
@@ -59,8 +54,6 @@ class LoginPage extends React.Component {
 
                 localStorage.setItem('access_token', result.access_token);
                 localStorage.setItem('username', user.username);
-                // localStorage.setItem('refresh_token', result.refresh_token);
-                // localStorage.setItem('role', result.role);
                 console.log("username: " + localStorage.getItem('username'));
 
 
