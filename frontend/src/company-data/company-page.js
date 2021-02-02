@@ -19,4 +19,4 @@ class CompanyPage extends React.Component{
     }
 }
 
-export default CompanyPage;
+export default CompanyPage; 

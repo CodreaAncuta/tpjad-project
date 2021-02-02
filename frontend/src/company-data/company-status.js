@@ -59,7 +59,7 @@ class CompanyStatus extends React.Component{
 
     fetchCompanyInfo(){
         return API_COMPANY.getCompanyById(this.compId, (result,status,err) => {
-            
+
             if(result != null && status == 200){
                 this.company = result;
                 this.forceUpdate();
@@ -71,12 +71,12 @@ class CompanyStatus extends React.Component{
 
     fetchServices(){
         return API_COMPANY.getCompanyServiceList(this.company.id, (result,status,err) => {
-            
+
             if(result != null && status == 200){
                 result.forEach(x => {
                     // this.companyServices.push(x);
                     // this.companyServicesIds.push(x.id);
-                    
+
                     this.tableData.push({
                         id: x.id,
                         price: x.jobPrice,
@@ -105,8 +105,7 @@ class CompanyStatus extends React.Component{
     }
 
     componentWillMount(){
-        let i = this.props.id;
-        console.log(this.props);
+        let i = localStorage.getItem("userId");
         if(i!=null){
            this.compId = i;
         }

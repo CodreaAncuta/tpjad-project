@@ -5,8 +5,9 @@ const endpoint = {
     company_endpoint: '/company/'
 };
 
-function getCompanyById(params, callback){
-    let request = new Request(HOST.backend_api + endpoint.company_endpoint + params.id, {
+function getCompanyById(userId, callback){
+    console.log("Requesting getCompanyById, user: " + userId)
+    let request = new Request(HOST.backend_api + endpoint.company_endpoint + userId, {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('access_token')
@@ -62,6 +63,7 @@ function deleteCompany(params, callback){
 }
 
 function getCompanyServiceList(id, callback){
+    console.log("Requesting getCompanyServiceList, user: " + id)
     let request = new Request(HOST.backend_api + "/service/companyServices/" + id, {
         method: 'GET',
         headers: {

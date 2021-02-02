@@ -29,7 +29,7 @@ class CompanyForm extends React.Component {
 
                 name: {
                     value: '',
-                    placeholder: 'Medication name...',
+                    placeholder: 'Company name...',
                     valid: false,
                     touched: false,
                     validationRules: {
@@ -80,9 +80,9 @@ class CompanyForm extends React.Component {
         this.companyServicesIds=[];
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        
         this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+        
 
     }
 
@@ -91,7 +91,7 @@ class CompanyForm extends React.Component {
     }
 
     fetchServices(){
-        return API_COMPANY.getCompanyServiceList(this.company.id, (result,status,err) => {
+        return API_COMPANY.getCompanyServiceList(this.compId, (result,status,err) => {
             
             if(result != null && status == 200){
                 result.forEach(x => {
@@ -107,39 +107,47 @@ class CompanyForm extends React.Component {
         });
     }
 
-    fetchCompanyInfo(){
-        return API_COMPANY.getCompanyById(this.compId, (result,status,err) => {
+    fetchCompanyInfo(userId){
+        return API_COMPANY.getCompanyById(userId, (result,status,err) => {
             
             if(result != null && status == 200){
-                this.company = result;
-                this.forceUpdate();
+                console.log("getCompanyById result: " + result.email);
+                this.company = result
+                console.log("company result: " + result);
+
+                //update form placeholder:
+
+                if (this.company != null){
+                    this.state.formControls.companyId.placeholder = this.company.id;
+                    this.state.formControls.email.placeholder = this.company.email;
+                    this.state.formControls.name.placeholder = this.company.name;
+                    this.state.formControls.password.placeholder = this.company.password;
+                    this.state.formControls.city.placeholder = this.company.city;
+                    this.state.formControls.areaOfWork.placeholder = this.company.areaOfWork;
+                }
+                
+                console.log("Now company:");
+                console.log(this.company);
+                if (this.company != null){
+                    this.fetchServices();
+                }
+                
             } else {
                 this.state.errorStatus = status;
                 this.state.error = err;
                 this.forceUpdate();
+                
             }
         });
-    }
-
-    componentWillMount(){
-        
     }
 
     componentDidMount() {
 
         let i = localStorage.getItem("userId");
-        if(i!=null){
-           this.compId = i;
-        }
-
-        console.log("ID COMP: "+ i);
-
-        if (this.compId != null){
-            this.fetchCompanyInfo();
-            console.log(this.company);
-            if (this.company != null){
-                this.fetchServices();
-            }
+        this.compId = i;
+        console.log("i="+i);
+        if (i != null){
+            this.fetchCompanyInfo(i);
         }   
     }
 
@@ -166,21 +174,6 @@ class CompanyForm extends React.Component {
             formControls: updatedControls
         });
     };
-
-    insertCompany(company) {
-        return API_COMPANY.postCompany(company, (result, status, error) => {
-            console.log(result);
-
-            if (result !== null && (status === 200 || status === 201)) {
-                console.log("Successfully inserted company with id: " + result);
-                alert("Successfully inserted company. Id: " + result.id);
-                this.props.refresh();
-            } else {
-                this.state.errorStatus = status;
-                this.error = error;
-            }
-        });
-    }
 
     updateCompany(company) {
         console.log(company);
@@ -212,44 +205,6 @@ class CompanyForm extends React.Component {
 
         // console.log("ID:" + this.state.formControls.medicationId.value);
         this.updateCompany(companyLocal);
-    }
-
-    handleSubmit() {
-
-        let companyLocal = {
-            id: this.company.id,
-            name: this.state.formControls.name.value,
-            email: this.state.formControls.email.value,
-            password: this.state.formControls.password.value,
-            areaOfWork: this.state.formControls.areaOfWork.value,
-            city: this.state.formControls.city.value,
-            logo: "",
-            servicesId: this.companyServicesIds
-        };
-
-        this.insertCompany(companyLocal);
-    }
-
-    handleDelete() {
-
-        let params = {
-            id: this.state.formControls.companyId.value
-        };
-
-        console.log(params);
-
-        return API_COMPANY.deleteCompany(params, (result, status, error) => {
-            console.log(result);
-
-            if (result == null && (status === 200 || status === 201)) {
-                console.log("Successfully deleted company with id: " + params.id);
-                alert("Successfully deleted company with id: " + result.id);
-                this.props.refresh();
-            } else {
-                this.state.errorStatus = status;
-                this.error = error;
-            }
-        });
     }
 
     render() {
@@ -338,20 +293,9 @@ class CompanyForm extends React.Component {
                     </div>
                     <br />
                     <div className="form-buttons">
-
-                        <Button
-                            onClick={this.handleSubmit}>
-                            Create
-                        </Button>
-
                         <Button
                             onClick={this.handleUpdate}>
                             Update
-                        </Button>
-
-                        <Button
-                            disabled={!this.state.idNotNull} onClick={this.handleDelete}>
-                            Delete
                         </Button>
                     </div>
 

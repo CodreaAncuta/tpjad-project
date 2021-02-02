@@ -1,5 +1,5 @@
 .form-control {
-  width: 50vw !important;
+  width: 100% !important;
   border: 1px solid #dddddd;
   padding: 10px;
   margin-right: 1vw;
@@ -9,49 +9,48 @@
   border: 1px solid #f20000 !important;
 }
 
-.error-message{
+.error-message {
   color: #ec392f;
   margin-bottom: 1%;
 }
 
-
-#add-mp{
+#add-mp {
   margin-left: 1vw;
   background-color: #28a745;
   border-color: #28a745;
 }
 
-#upd-mp{
+#upd-mp {
   margin-left: 1vw;
   background-color: #28a745;
   border-color: #28a745;
 }
 
-.medplan-form-container{
+.medplan-form-container {
   background-color: gray;
   height: 80vh;
 }
 
-.companyForm{
-  width: 80vw;
-  margin-left:auto;
+.companyForm {
+  /* width: 80vw; */
+  margin-left: auto;
 }
 
 .cformLabel {
-  margin-left:1wv;
-  float:left;
+  margin-left: 1wv;
+  float: left;
   width: 10vw;
 }
 
-.form-group{
+.form-group {
   display: inline-block;
 }
 
-.form-buttons{
+.form-buttons {
   width: 80vw;
   margin-bottom: auto;
 }
 
-.button{
+.button {
   margin-left: 1vw;
 }
