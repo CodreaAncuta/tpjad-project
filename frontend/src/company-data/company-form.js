@@ -111,9 +111,7 @@ class CompanyForm extends React.Component {
         return API_COMPANY.getCompanyById(userId, (result,status,err) => {
             
             if(result != null && status == 200){
-                console.log("getCompanyById result: " + result.email);
-                this.company = result
-                console.log("company result: " + result);
+                this.company = result;
 
                 //update form placeholder:
 
@@ -125,9 +123,6 @@ class CompanyForm extends React.Component {
                     this.state.formControls.city.placeholder = this.company.city;
                     this.state.formControls.areaOfWork.placeholder = this.company.areaOfWork;
                 }
-                
-                console.log("Now company:");
-                console.log(this.company);
                 if (this.company != null){
                     this.fetchServices();
                 }
@@ -145,7 +140,7 @@ class CompanyForm extends React.Component {
 
         let i = localStorage.getItem("userId");
         this.compId = i;
-        console.log("i="+i);
+        
         if (i != null){
             this.fetchCompanyInfo(i);
         }   
@@ -176,16 +171,15 @@ class CompanyForm extends React.Component {
     };
 
     updateCompany(company) {
-        console.log(company);
-        return API_COMPANY.updateCompany(company, company.id, (result, status, error) => {
-            console.log(result);
+        return API_COMPANY.updateCompany(company, (result, status, error) => {
 
             if (result !== null && (status === 200 || status === 201)) {
-                console.log("Successfully updated company with id: " + result);
-                alert("Successfully updated medication with id: " + result.id);
+               // alert("Successfully updated company with id: " + result.id);
+               this.forceUpdate();
             } else {
                 this.state.errorStatus = status;
                 this.error = error;
+                this.forceUpdate();
             }
         });
     }
@@ -194,16 +188,30 @@ class CompanyForm extends React.Component {
 
         let companyLocal = {
             id: this.company.id,
-            name: this.state.formControls.name.value,
-            email: this.state.formControls.name.email,
-            password: this.state.formControls.name.password,
-            areaOfWork: this.state.formControls.name.areaOfWork,
-            city: this.state.formControls.name.city,
+            name: "",
+            email: this.company.email,
+            password: this.company.password,
+            areaOfWork: "",
+            city: "",
             logo: "",
             servicesId: this.companyServicesIds
         };
 
-        // console.log("ID:" + this.state.formControls.medicationId.value);
+        if (this.state.formControls.name.value == null)
+            companyLocal.name = this.state.formControls.name.placeholder;
+        else
+            companyLocal.name = this.state.formControls.name.value;
+
+        if (this.state.formControls.areaOfWork.value == null)
+            companyLocal.areaOfWork = this.state.formControls.areaOfWork.placeholder;
+        else
+            companyLocal.areaOfWork = this.state.formControls.areaOfWork.value;
+
+        if (this.state.formControls.city.value == null)
+            companyLocal.city = this.state.formControls.city.placeholder;
+        else
+            companyLocal.city = this.state.formControls.city.value;
+
         this.updateCompany(companyLocal);
     }
 

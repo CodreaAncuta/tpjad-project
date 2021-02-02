@@ -62,7 +62,7 @@ public class CompanyService {
         return companyRepository.save(builder.generateEntityFromDTO(cDTO));
     }
 
-    public void delete(CompanyDTO fDTO) {
-        this.companyRepository.deleteById(fDTO.getId());
+    public void delete(Integer id) {
+        this.companyRepository.deleteById(id);
     }
 }

@@ -3,6 +3,12 @@ import * as API_COMPANY from "./api/company-api";
 import {Card, Col, Row} from 'reactstrap';
 import Table from  "../commons/tables/table";
 
+const buttonStyle = {
+    display: 'inline-block',
+    width: 'calc(50% - 4px)',
+    margin: '0 auto'
+};
+
 const columns = [
     {
         Header:  'Id',
@@ -23,6 +29,10 @@ const columns = [
     {
         Header:  'AnnouncementId',
         accessor: 'announcementId',
+    },
+    {
+        Header:  'DeleteService',
+        accessor: 'deleteService',
     }
 ];
 
@@ -41,6 +51,9 @@ const filters = [
     },
     {
         accessor: 'announcementId',
+    },
+    {
+        accessor: '',
     }
 ];
 
@@ -55,15 +68,38 @@ class CompanyStatus extends React.Component{
         this.company = null;
         this.companyServices=[];
         this.companyServicesIds=[];
+
+        this.handelDeleteService = this.handelDeleteService.bind(this);
     }
 
-    fetchCompanyInfo(){
-        return API_COMPANY.getCompanyById(this.compId, (result,status,err) => {
-
+    fetchCompanyInfo(userId){
+        return API_COMPANY.getCompanyById(userId, (result,status,err) => {
+            
             if(result != null && status == 200){
-                this.company = result;
+                console.log("getCompanyById result: " + result.email);
+                this.company = result
+                console.log("company result: " + result);
+                if (this.company != null){
+                    this.fetchServices();
+                }
+            } else {
+                this.state.errorStatus = status;
+                this.state.error = err;
+                this.forceUpdate();
+                
+            }
+        });
+    }
+
+    handelDeleteService(serv) {
+
+        return API_COMPANY.deleteService(serv, (result,status,err) => {
+            if(result != null && status == 200){
+                alert("Successfully deleted service with id: " + serv.id);
                 this.forceUpdate();
             } else {
+                this.state.errorStatus = status;
+                this.state.error = err;
                 this.forceUpdate();
             }
         });
@@ -71,19 +107,32 @@ class CompanyStatus extends React.Component{
 
     fetchServices(){
         return API_COMPANY.getCompanyServiceList(this.company.id, (result,status,err) => {
-
+            console.log("before push");
             if(result != null && status == 200){
+                console.log("Result of company id="+this.company.id+"::::");
+                console.log(result);
                 result.forEach(x => {
                     // this.companyServices.push(x);
                     // this.companyServicesIds.push(x.id);
 
+                    let name = "";
+
+                    API_COMPANY.getFreelancer(x.freelancerId, (result,status,err) => {
+                        if(result != null && status == 200){
+                            name = result.name;
+                        }
+                    });
+
+                    
                     this.tableData.push({
                         id: x.id,
                         price: x.jobPrice,
                         duration: x.jobDuration,
                         freelancerId: x.freelancerId,
-                        announcementId: x.announcementId
+                        announcementId: x.announcementId,
+                        deleteService: <button onClick = {() => this.handelDeleteService(x)} style={buttonStyle}> Request </button>
                     });
+
                 });
                 this.forceUpdate();
             } else {
@@ -96,20 +145,15 @@ class CompanyStatus extends React.Component{
 
     componentDidMount() {
 
-        if (this.compId != null){
-            this.fetchCompanyInfo();
-            if (this.company){
-                this.fetchServices();
-            }
+        let i = localStorage.getItem("userId");
+        this.compId = i;
+        console.log("i="+i);
+        if (i != null){
+            this.fetchCompanyInfo(i);
         }
     }
 
-    componentWillMount(){
-        let i = localStorage.getItem("userId");
-        if(i!=null){
-           this.compId = i;
-        }
-    }
+    
 
     render(){
         let pageSize = 5;

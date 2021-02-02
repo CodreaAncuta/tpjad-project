@@ -35,6 +35,7 @@ class App extends React.Component {
                         />
 
                         <Route exact={true} component={ErrorPage} path="/error" />
+                        {/* <Route exact={true} component={AnnouncementPage} path="/ann" /> */}
                     </Switch>
                 </Router>
             </div >
