@@ -1,5 +1,5 @@
 import React from 'react';
-import * as API_USERS from "../user-data/user/api/user-api";
+import * as API_USERS from "./api/user-api";
 import userRoles from "../commons/constants/enums";
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
