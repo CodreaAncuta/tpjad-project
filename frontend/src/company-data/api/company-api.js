@@ -34,7 +34,7 @@ function postCompany(company, callback){
 }
 
 function updateCompany(company, callback){
-    let request = new Request(HOST.backend_api + endpoint.medication_endpoint, {
+    let request = new Request(HOST.backend_api + endpoint.company_endpoint, {
         method: 'PUT',
         headers : {
             'Accept': 'application/json',
@@ -75,10 +75,23 @@ function getCompanyServiceList(id, callback){
     RestApiClient.performRequest(request, callback);
 }
 
+function getFreelancer(id, callback){
+    let request = new Request(HOST.backend_api + "/freelancer/" + id, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+    });
+
+    console.log(request.url);
+    RestApiClient.performRequest(request, callback);
+}
+
 export {
     getCompanyById,
     postCompany,
     updateCompany,
     deleteCompany,
-    getCompanyServiceList
+    getCompanyServiceList,
+    getFreelancer
 };

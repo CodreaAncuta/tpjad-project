@@ -57,25 +57,42 @@ class CompanyStatus extends React.Component{
         this.companyServicesIds=[];
     }
 
-    fetchCompanyInfo(){
-        return API_COMPANY.getCompanyById(this.compId, (result,status,err) => {
-
+    fetchCompanyInfo(userId){
+        return API_COMPANY.getCompanyById(userId, (result,status,err) => {
+            
             if(result != null && status == 200){
-                this.company = result;
-                this.forceUpdate();
+                console.log("getCompanyById result: " + result.email);
+                this.company = result
+                console.log("company result: " + result);
+                if (this.company != null){
+                    this.fetchServices();
+                }
             } else {
+                this.state.errorStatus = status;
+                this.state.error = err;
                 this.forceUpdate();
+                
             }
         });
     }
 
     fetchServices(){
         return API_COMPANY.getCompanyServiceList(this.company.id, (result,status,err) => {
-
+            
             if(result != null && status == 200){
+                console.log("Result of company id="+this.company.id+"::::");
+                console.log(result);
                 result.forEach(x => {
                     // this.companyServices.push(x);
                     // this.companyServicesIds.push(x.id);
+
+                    let name = "";
+
+                    API_COMPANY.getFreelancer(x.freelancerId, (result,status,err) => {
+                        if(result != null && status == 200){
+                            name = result.name;
+                        }
+                    });
 
                     this.tableData.push({
                         id: x.id,
@@ -84,6 +101,8 @@ class CompanyStatus extends React.Component{
                         freelancerId: x.freelancerId,
                         announcementId: x.announcementId
                     });
+
+                    console.log("-----"+x.id);
                 });
                 this.forceUpdate();
             } else {
@@ -96,18 +115,11 @@ class CompanyStatus extends React.Component{
 
     componentDidMount() {
 
-        if (this.compId != null){
-            this.fetchCompanyInfo();
-            if (this.company){
-                this.fetchServices();
-            }
-        }
-    }
-
-    componentWillMount(){
         let i = localStorage.getItem("userId");
-        if(i!=null){
-           this.compId = i;
+        this.compId = i;
+        console.log("i="+i);
+        if (i != null){
+            this.fetchCompanyInfo(i);
         }
     }
 
