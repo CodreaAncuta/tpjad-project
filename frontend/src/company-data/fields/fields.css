@@ -32,7 +32,7 @@
 }
 
 .companyForm {
-  /* width: 80vw; */
+  width: 80vw;
   margin-left: auto;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .form-buttons {
-  width: 80vw;
+  width: 40vw;
   margin-bottom: auto;
 }
 

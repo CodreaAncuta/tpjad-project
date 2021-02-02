@@ -3,6 +3,12 @@ import * as API_COMPANY from "./api/company-api";
 import {Card, Col, Row} from 'reactstrap';
 import Table from  "../commons/tables/table";
 
+const buttonStyle = {
+    display: 'inline-block',
+    width: 'calc(50% - 4px)',
+    margin: '0 auto'
+};
+
 const columns = [
     {
         Header:  'Id',
@@ -23,6 +29,10 @@ const columns = [
     {
         Header:  'AnnouncementId',
         accessor: 'announcementId',
+    },
+    {
+        Header:  'DeleteService',
+        accessor: 'deleteService',
     }
 ];
 
@@ -41,6 +51,9 @@ const filters = [
     },
     {
         accessor: 'announcementId',
+    },
+    {
+        accessor: '',
     }
 ];
 
@@ -55,6 +68,8 @@ class CompanyStatus extends React.Component{
         this.company = null;
         this.companyServices=[];
         this.companyServicesIds=[];
+
+        this.handelDeleteService = this.handelDeleteService.bind(this);
     }
 
     fetchCompanyInfo(userId){
@@ -76,9 +91,25 @@ class CompanyStatus extends React.Component{
         });
     }
 
+    handelDeleteService(serv) {
+        // private Integer id;
+        // private String jobPrice;
+        // private String jobDuration;
+        // private Integer freelancerId;
+        // private Integer companyId;
+        // private Integer announcementId;
+
+        //if user freelancer the button is not there
+        //if user is company it has the button
+        //get the logged company - get freelancer by announcement
+        
+        console.log("Yey the button works");
+        console.log(serv);
+    }
+
     fetchServices(){
         return API_COMPANY.getCompanyServiceList(this.company.id, (result,status,err) => {
-            
+            console.log("before push");
             if(result != null && status == 200){
                 console.log("Result of company id="+this.company.id+"::::");
                 console.log(result);
@@ -94,15 +125,16 @@ class CompanyStatus extends React.Component{
                         }
                     });
 
+                    
                     this.tableData.push({
                         id: x.id,
                         price: x.jobPrice,
                         duration: x.jobDuration,
                         freelancerId: x.freelancerId,
-                        announcementId: x.announcementId
+                        announcementId: x.announcementId,
+                        deleteService: <button onClick = {() => this.handelDeleteService(x)} style={buttonStyle}> Request </button>
                     });
 
-                    console.log("-----"+x.id);
                 });
                 this.forceUpdate();
             } else {
@@ -122,6 +154,8 @@ class CompanyStatus extends React.Component{
             this.fetchCompanyInfo(i);
         }
     }
+
+    
 
     render(){
         let pageSize = 5;
