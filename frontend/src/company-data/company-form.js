@@ -174,10 +174,12 @@ class CompanyForm extends React.Component {
         return API_COMPANY.updateCompany(company, (result, status, error) => {
 
             if (result !== null && (status === 200 || status === 201)) {
-                alert("Successfully updated company with id: " + result.id);
+               // alert("Successfully updated company with id: " + result.id);
+               this.forceUpdate();
             } else {
                 this.state.errorStatus = status;
                 this.error = error;
+                this.forceUpdate();
             }
         });
     }
@@ -187,8 +189,8 @@ class CompanyForm extends React.Component {
         let companyLocal = {
             id: this.company.id,
             name: "",
-            email: "",
-            password: "",
+            email: this.company.email,
+            password: this.company.password,
             areaOfWork: "",
             city: "",
             logo: "",
@@ -199,16 +201,6 @@ class CompanyForm extends React.Component {
             companyLocal.name = this.state.formControls.name.placeholder;
         else
             companyLocal.name = this.state.formControls.name.value;
-
-        if (this.state.formControls.email.value == null)
-            companyLocal.email = this.state.formControls.email.placeholder;
-        else
-            companyLocal.email = this.state.formControls.email.value;
-        
-        if (this.state.formControls.password.value == null)
-            companyLocal.password = this.state.formControls.password.placeholder;
-        else
-            companyLocal.password = this.state.formControls.password.value;
 
         if (this.state.formControls.areaOfWork.value == null)
             companyLocal.areaOfWork = this.state.formControls.areaOfWork.placeholder;
