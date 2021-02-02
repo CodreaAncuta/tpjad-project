@@ -171,7 +171,6 @@ class CompanyForm extends React.Component {
     };
 
     updateCompany(company) {
-
         return API_COMPANY.updateCompany(company, (result, status, error) => {
 
             if (result !== null && (status === 200 || status === 201)) {

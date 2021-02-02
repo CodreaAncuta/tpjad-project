@@ -92,19 +92,17 @@ class CompanyStatus extends React.Component{
     }
 
     handelDeleteService(serv) {
-        // private Integer id;
-        // private String jobPrice;
-        // private String jobDuration;
-        // private Integer freelancerId;
-        // private Integer companyId;
-        // private Integer announcementId;
 
-        //if user freelancer the button is not there
-        //if user is company it has the button
-        //get the logged company - get freelancer by announcement
-        
-        console.log("Yey the button works");
-        console.log(serv);
+        return API_COMPANY.deleteService(serv, (result,status,err) => {
+            if(result != null && status == 200){
+                alert("Successfully deleted service with id: " + serv.id);
+                this.forceUpdate();
+            } else {
+                this.state.errorStatus = status;
+                this.state.error = err;
+                this.forceUpdate();
+            }
+        });
     }
 
     fetchServices(){

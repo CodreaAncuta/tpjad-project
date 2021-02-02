@@ -87,11 +87,25 @@ function getFreelancer(id, callback){
     RestApiClient.performRequest(request, callback);
 }
 
+function deleteService(service, callback){
+    let request = new Request(HOST.backend_api + "/service", {
+        method: 'DELETE',
+        headers : {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        },
+        body: JSON.stringify(service)
+    });
+    RestApiClient.performRequest(request, callback);
+}
+
 export {
     getCompanyById,
     postCompany,
     updateCompany,
     deleteCompany,
     getCompanyServiceList,
-    getFreelancer
+    getFreelancer,
+    deleteService
 };
