@@ -46,9 +46,9 @@ public class ServiceController {
         return sservice.findServiceById(id);
     }
 
-    @GetMapping(value = "/freelancerServices")
-    public Set<ServiceDTO> getServicesByFreelancer(@RequestBody Freelancer f){
-        return sservice.getServicesByFreelancer(f);
+    @GetMapping(value = "/freelancerServices/{id}")
+    public Set<ServiceDTO> getServicesByFreelancer(@PathVariable("id") Integer id){
+        return sservice.getServicesByFreelancer(id);
     }
 
     @GetMapping(value = "/companyServices")
