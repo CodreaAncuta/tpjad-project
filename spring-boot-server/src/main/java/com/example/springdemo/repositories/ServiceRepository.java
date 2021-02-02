@@ -27,10 +27,9 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
             "ORDER BY s.jobDuration")
     Set<Service> getAllByDuration();
 
-    @Query(value = "SELECT s " +
-            "FROM Service s WHERE s.freelancer=?1 " +
-            "ORDER BY s.id")
-    Set<Service> getAllPerFreelancer(Freelancer f);
+    /*SELECT * FROM patient p JOIN user u ON p.id=u.id WHERE p.doctor_id = ?1*/
+    @Query(value = "SELECT * FROM service s JOIN freelancer f ON s.freelancer_id=f.id WHERE s.freelancer_id = ?1 ",nativeQuery = true)
+    Set<Service>  getAllPerFreelancer(Integer  id);
 
     @Query(value = "SELECT s " +
             "FROM Service s WHERE s.company=?1 " +

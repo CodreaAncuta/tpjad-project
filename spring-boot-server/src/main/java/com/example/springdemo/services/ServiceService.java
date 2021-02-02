@@ -71,8 +71,8 @@ public class ServiceService {
         this.serviceRepository.deleteById(service.getId());
     }
 
-    public Set<ServiceDTO> getServicesByFreelancer(Freelancer freelancer){
-        Set<Service> servSet = serviceRepository.getAllPerFreelancer(freelancer);
+    public Set<ServiceDTO> getServicesByFreelancer(Integer id){
+        Set<Service> servSet = serviceRepository.getAllPerFreelancer(id);
         return servSet.stream()
                 .map(builder::generateDTOFromEntity)
                 .collect(Collectors.toSet());
