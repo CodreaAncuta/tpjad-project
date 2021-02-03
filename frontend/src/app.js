@@ -6,7 +6,8 @@ import LoginPage from './user-data/login-page'
 import userRoles from "./commons/constants/enums";
 import styles from './commons/styles/project-style.css';
 import CompanyPage from './company-data/company-page';
-import FreelancerPage from './components/freelancer-page';
+import FreelancerPage from './freelancer-data/freelancer-page';
+import FreelancerAnnouncementPage from './freelancer-announcement-data/freelancer-announcements';
 
 class App extends React.Component {
     render() {
@@ -32,6 +33,12 @@ class App extends React.Component {
                             exact
                             path='/freelancer'
                             render={() => <FreelancerPage />}
+                        />
+
+                        <Route
+                            exact
+                            path='/freelancer/announcements'
+                            render={() => <FreelancerAnnouncementPage />}
                         />
 
                         <Route exact={true} component={ErrorPage} path="/error" />

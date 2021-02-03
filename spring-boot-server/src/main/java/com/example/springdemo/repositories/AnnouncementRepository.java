@@ -7,14 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Integer> {
-    @Query(value = "SELECT s " +
-            "FROM Announcement s " +
-            "ORDER BY s.id")
-    Set<Announcement> getAllOrdered();
 
     @Query(value = "SELECT s " +
             "FROM Announcement s WHERE s.freelancer=?1 " +
@@ -30,11 +27,14 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Inte
             "FROM Announcement s WHERE s.id=?1 ")
     Announcement getById(Integer id);
 
-    public Set<Announcement> findByCategoryContains(String category);
+    @Query(value = "SELECT * FROM announcement s JOIN freelancer f ON s.freelancer_id=f.id WHERE s.freelancer_id = ?1 ",nativeQuery = true)
+    Set<Announcement>  getAllAnnouncementsPerFreelancer(Integer  id);
 
-    public Set<Announcement> findByTechnologyContains(String technology);
+    public List<Announcement> findByCategoryContains(String category);
 
-    public Set<Announcement> findByTechnologyAndCategory(String technology, String category);
+    public List<Announcement> findByTechnologyContains(String technology);
+
+    public List<Announcement> findByTechnologyAndCategory(String technology, String category);
 
     public Set<Announcement> findByPriceLessThanEqual(Integer price);
 

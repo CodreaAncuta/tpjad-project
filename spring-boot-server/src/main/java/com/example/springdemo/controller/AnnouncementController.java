@@ -7,6 +7,7 @@ import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -22,7 +23,7 @@ public class AnnouncementController {
     }
 
     @GetMapping()
-    public Set<AnnouncementDTO> findAll(
+    public List<AnnouncementDTO> findAll(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String technology) {
         if (!Strings.isNullOrEmpty(category) && !Strings.isNullOrEmpty(technology))
@@ -67,5 +68,10 @@ public class AnnouncementController {
     @GetMapping(value = "/{id}")
     public Announcement findById(@PathVariable("id") Integer id) {
         return announcementService.findAnnouncementById(id);
+    }
+
+    @GetMapping(value = "/freelancerAnnouncement/{id}")
+    public Set<AnnouncementDTO> getAnnouncementByFreelancer(@PathVariable("id") Integer id){
+        return announcementService.getAnnouncementsByFreelancer(id);
     }
 }

@@ -2,7 +2,7 @@ import React from "react";
 import {Card, Col, Row} from "reactstrap";
 import Table from "../commons/tables/table";
 import APIResponseErrorMessage from "../commons/errorhandling/api-response-error-message";
-import * as API_FREELANCER from "../freelancer-data/api/freelancer-api";
+import * as API_FREELANCER from "./api/freelancer-api";
 import Link from "react-router-dom/Link";
 import {Container, Navbar} from "react-bootstrap";
 /*import {Row} from "react-bootstrap/Row";*/
@@ -137,7 +137,7 @@ class FreelancerPage extends React.Component {
                                     <button onClick={this.handleLogout}> Logout</button>
 
                                  </div>
-                                <h4 className="title text-center"><Link to="/freelancerProfile/Announcements">View Announcements</Link></h4>
+                                <h4 className="title text-center"><Link to="/freelancer/announcements">View Announcements</Link></h4>
                                 <h4 className="title text-center"><Link to="/announcements">Home Page</Link></h4>
                             </span>
                             </Card>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,32 +41,32 @@ public class AnnouncementService {
         return announcementOptional.get();
     }
 
-    public Set<AnnouncementDTO> findAll() {
-        Set<Announcement> announcements = announcementRepository.getAllOrdered();
+    public List<AnnouncementDTO> findAll() {
+        List<Announcement> announcements = announcementRepository.findAll();
         return announcements.stream()
                 .map(builder::generateDTOFromEntity)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<AnnouncementDTO> findByCategory(String category) {
-        Set<Announcement> announcements = announcementRepository.findByCategoryContains(category);
+    public List<AnnouncementDTO> findByCategory(String category) {
+        List<Announcement> announcements = announcementRepository.findByCategoryContains(category);
         return announcements.stream()
                 .map(builder::generateDTOFromEntity)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<AnnouncementDTO> findByTechnology(String technology) {
-        Set<Announcement> announcements = announcementRepository.findByTechnologyContains(technology);
+    public List<AnnouncementDTO> findByTechnology(String technology) {
+        List<Announcement> announcements = announcementRepository.findByTechnologyContains(technology);
         return announcements.stream()
                 .map(builder::generateDTOFromEntity)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
-    public Set<AnnouncementDTO> findByTechnologyAndCategory(String technology, String category) {
-        Set<Announcement> announcements = announcementRepository.findByTechnologyAndCategory(technology, category);
+    public List<AnnouncementDTO> findByTechnologyAndCategory(String technology, String category) {
+        List<Announcement> announcements = announcementRepository.findByTechnologyAndCategory(technology, category);
         return announcements.stream()
                 .map(builder::generateDTOFromEntity)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     public Set<AnnouncementDTO> findByPrice(Integer price, String operator) {
@@ -109,5 +110,12 @@ public class AnnouncementService {
 
     public void delete(AnnouncementDTO aDTO) {
         this.announcementRepository.deleteById(aDTO.getId());
+    }
+
+    public Set<AnnouncementDTO> getAnnouncementsByFreelancer(Integer id){
+        Set<Announcement> annSet = announcementRepository.getAllAnnouncementsPerFreelancer(id);
+        return annSet.stream()
+                .map(builder::generateDTOFromEntity).collect(Collectors.toSet());
+
     }
 }
