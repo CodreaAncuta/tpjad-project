@@ -55,14 +55,14 @@ public class AnnouncementController {
         return announcementService.insert(announcementDTO);
     }
 
-    @PutMapping()
-    public Announcement update(@RequestBody AnnouncementDTO announcementDTO) {
-        return announcementService.update(announcementDTO);
+    @PutMapping(value = "/{id}")
+    public Announcement update(@PathVariable("id") Integer id, @RequestBody AnnouncementDTO announcementDTO) {
+        return announcementService.update(id, announcementDTO);
     }
 
-    @DeleteMapping()
-    public void delete(@RequestBody AnnouncementDTO announcementDTO) {
-        announcementService.delete(announcementDTO);
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable("id") Integer id) {
+        announcementService.delete(id);
     }
 
     @GetMapping(value = "/{id}")
@@ -71,7 +71,13 @@ public class AnnouncementController {
     }
 
     @GetMapping(value = "/freelancerAnnouncement/{id}")
-    public Set<AnnouncementDTO> getAnnouncementByFreelancer(@PathVariable("id") Integer id){
+    public Set<AnnouncementDTO> getAnnouncementByFreelancer(@PathVariable("id") Integer id) {
         return announcementService.getAnnouncementsByFreelancer(id);
+    }
+
+    @GetMapping(value = "/freelancer/{id}")
+    public AnnouncementDTO getAnnouncementByFreelancerAndTitle(@PathVariable("id") Integer id,
+                                                                    @RequestParam(required = true) String title) {
+        return announcementService.getAnnouncementByFreelancerAndTitle(id, title);
     }
 }

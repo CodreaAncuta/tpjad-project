@@ -43,4 +43,6 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Inte
     public Set<Announcement> findByPrice(Integer price);
 
     public Set<Announcement> findByDuration(Integer duration);
+
+    public Announcement findByFreelancerIdAndTitle(Integer fId, String title);
 }

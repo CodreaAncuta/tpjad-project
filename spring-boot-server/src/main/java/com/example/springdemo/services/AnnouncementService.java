@@ -100,22 +100,28 @@ public class AnnouncementService {
                 .getId();
     }
 
-    public Announcement update(AnnouncementDTO aDTO) {
-        Optional<Announcement> announcementOptional = announcementRepository.findById(aDTO.getId());
+    public Announcement update(Integer id, AnnouncementDTO aDTO) {
+        Optional<Announcement> announcementOptional = announcementRepository.findById(id);
         if (!announcementOptional.isPresent()) {
             return null;
         }
         return announcementRepository.save(builder.generateEntityFromDTO(aDTO));
     }
 
-    public void delete(AnnouncementDTO aDTO) {
-        this.announcementRepository.deleteById(aDTO.getId());
+    public void delete(Integer id) {
+        this.announcementRepository.deleteById(id);
     }
 
     public Set<AnnouncementDTO> getAnnouncementsByFreelancer(Integer id){
         Set<Announcement> annSet = announcementRepository.getAllAnnouncementsPerFreelancer(id);
         return annSet.stream()
                 .map(builder::generateDTOFromEntity).collect(Collectors.toSet());
+
+    }
+
+    public AnnouncementDTO getAnnouncementByFreelancerAndTitle(Integer id,String title){
+        Announcement announcement = announcementRepository.findByFreelancerIdAndTitle(id, title);
+        return builder.generateDTOFromEntity(announcement);
 
     }
 }

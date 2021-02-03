@@ -5,7 +5,17 @@ import Table from "../commons/tables/table"
 import FreelancerAnnouncementForm from "./freelancer-announcement-form";
 import * as API_ANNOUNCEMENTS from "./api/freelancer-announcements-api"
 
+const buttonStyle = {
+    display: 'inline-block',
+    width: 'calc(50% - 4px)',
+    margin: '0 auto'
+};
+
 const columns = [
+    {
+        Header:  'Id',
+        accessor: 'id',
+    },
     {
         Header:  'Title',
         accessor: 'title',
@@ -24,11 +34,16 @@ const columns = [
         Header: 'Technology',
         accessor: 'technology',
     },
-
-
+    {
+        Header:  'Delete',
+        accessor: 'deleteAnnouncement',
+    }
 ];
 
 const filters = [
+    {
+        accessor: 'id'
+    },
     {
         accessor: 'title'
     },
@@ -43,7 +58,9 @@ const filters = [
     {
         accessor: 'technology'
     },
-
+    {
+        accessor: '',
+    }
 ];
 
 class FreelancerAnnouncementPage extends React.Component {
@@ -59,6 +76,7 @@ class FreelancerAnnouncementPage extends React.Component {
         };
 
         this.tableData = [];
+        this.handleDeleteAnnouncement = this.handleDeleteAnnouncement.bind(this);
     }
 
     handleLogout() {
@@ -81,19 +99,34 @@ class FreelancerAnnouncementPage extends React.Component {
         this.fetchAnnouncements(params);
     }
 
+    handleDeleteAnnouncement(announcement) {
+        return API_ANNOUNCEMENTS.deleteAnnouncement(announcement.id, (result,status,err) => {
+            this.forceUpdate();
+            if(result !== null && (status == 200 || status == 204)){
+                alert("Successfully deleted announcement!");
+                this.forceUpdate();
+            } else {
+                this.state.errorStatus = status;
+                this.state.error = err;
+                this.forceUpdate();
+            }
+        });
+    }
+
     fetchAnnouncements(params) {
         return API_ANNOUNCEMENTS.getAnnouncementsByFreelancerId(params,(result, status, err) => {
            console.log(result);
            if(result !== null && status === 200) {
             result.forEach(x => {
                 this.tableData.push({
-                    title:x.title,
-                    description:x.description,
-                    category:x.category,
-                    technology:x.technology,
-                    title:x.title,
-                    price:x.price,
-                    duration:x.duration
+                    id: x.id,
+                    title: x.title,
+                    description: x.description,
+                    category: x.category,
+                    technology: x.technology,
+                    price: x.price,
+                    duration: x.duration,
+                    deleteAnnouncement: <button onClick = {() => this.handleDeleteAnnouncement(x)} style={buttonStyle}> Request </button>
                 });
             });
                this.forceUpdate();

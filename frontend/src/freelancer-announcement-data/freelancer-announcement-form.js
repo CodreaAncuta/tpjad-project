@@ -20,13 +20,6 @@ class FreelancerAnnouncementForm extends React.Component {
 
             formControls: {
 
-                announcementId: {
-                    value: '',
-                    valid: true,
-                    placeholder: 'Announcement id...',
-                    touched: true
-                },
-
                 title: {
                     value: '',
                     placeholder: 'Your title...',
@@ -89,9 +82,8 @@ class FreelancerAnnouncementForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
         this.handleGet = this.handleGet.bind(this);
-
+        // this.handleRefreshTable = this.handleRefreshTable.bind(this);
     }
 
     toggleForm() {
@@ -137,6 +129,7 @@ class FreelancerAnnouncementForm extends React.Component {
             } else {
                 this.state.errorStatus = status;
                 this.error = error;
+                this.forceUpdate();
             }
         });
     }
@@ -164,8 +157,6 @@ class FreelancerAnnouncementForm extends React.Component {
         console.log("category: " + this.state.formControls.category.value);
         console.log("technology: " + this.state.formControls.technology.value);
 
-
-
         let announcement = {
             title: this.state.formControls.title.value,
             description: this.state.formControls.description.value,
@@ -176,8 +167,7 @@ class FreelancerAnnouncementForm extends React.Component {
             freelancerId: localStorage.getItem('userId')
         };
 
-        // console.log("ID:" + this.state.formControls.caregiverId.value);
-        this.updateAnnouncement(announcement, localStorage.getItem('announcementIdCreated'));
+        this.updateAnnouncement(announcement, localStorage.getItem('announcementIdCurrent'));
     }
 
     handleSubmit() {
@@ -202,82 +192,73 @@ class FreelancerAnnouncementForm extends React.Component {
         this.registerAnnouncement(announcement);
     }
 
-    handleDelete() {
-
-        let announcement = {
-            title: this.state.formControls.title.value,
-            description: this.state.formControls.description.value,
-            category: this.state.formControls.category.value,
-            technology: this.state.formControls.technology.value,
-            price: this.state.formControls.price.value,
-            duration: this.state.formControls.duration.value,
-            // freelancerId: localStorage.getItem('userId')
-        };
-
-        // console.log(params);
-
-        return API_ANNOUNCEMENTS.deleteAnnouncement(announcement, (result, status, error) => {
-            console.log(result);
-
-            if (result == null && (status === 200 || status === 201)) {
-                // console.log("Successfully deleted announcement with id: " + announcement.freelancerId);
-                // alert("Successfully deleted announcement with id: " + result.id);
-                this.props.refresh();
-            } else {
-                this.state.errorStatus = status;
-                this.error = error;
-            }
-        });
-    }
-
     handleGet() {
-
         let params = {
-            id: localStorage.getItem('userId')
+            title: this.state.formControls.title.value
         };
-
-        console.log(params);
-
-        return API_ANNOUNCEMENTS.getAnnouncementsByFreelancerId(params, (result, status, error) => {
-            console.log(result);
-
-            if (result != null && (status === 200 || status === 201)) {
-                console.log("Successfully got announcements ");
-
-                result.forEach(x => {
-                    this.announcement.push({
-                        title:x.title,
-                        description:x.description,
-                        category:x.category,
-                        technology:x.technology,
-                        title:x.title,
-                        price:x.price,
-                        duration:x.duration
-                    });
-                });
-                // alert(
-                //     "Caregiver ID: " + result.id + "\n" +
-                //     "Name: " + result.name + "\n" +
-                //     "Birth date: " + result.birthDate + "\n" +
-                //     "Gender: " + result.gender + "\n" +
-                //     "Address: " + result.address + "\n" +
-                //     "User ID: " + result.userId + "\n" +
-                //     "Doctor ID: " + result.doctorId
-                // )
-
+        return API_ANNOUNCEMENTS.getAnnouncementByTitleAndFreelancerId(localStorage.getItem('userId'), params, (result,status,err) => {
+            if(result != null && status == 200){
+                alert("Successfully fetched announcement: " + result.title);
+                localStorage.setItem('announcementIdCurrent', result.id);
+                this.idAnnouncement = result.id;
+                this.state.formControls.title.placeholder = result.title;
+                this.state.formControls.description.placeholder = result.description;
+                this.state.formControls.category.placeholder = result.category;
+                this.state.formControls.technology.placeholder = result.technology;
+                this.state.formControls.price.placeholder = result.price;
+                this.state.formControls.duration.placeholder = result.duration;
+                this.forceUpdate();
             } else {
                 this.state.errorStatus = status;
-                this.error = error;
+                this.state.error = err;
+                this.forceUpdate();
             }
         });
     }
 
-// private String title;
-// private String description;
-// private String category;
-// private String technology;
-// private Integer price;
-// private Integer duration;
+    // handleRefreshTable() {
+
+    //     let params = {
+    //         id: localStorage.getItem('userId')
+    //     };
+
+    //     console.log(params);
+
+    //     return API_ANNOUNCEMENTS.getAnnouncementsByFreelancerId(params, (result, status, error) => {
+    //         console.log(result);
+
+    //         if (result != null && (status === 200 || status === 201)) {
+    //             console.log("Successfully got announcements ");
+
+    //             result.forEach(x => {
+    //                 this.announcement.push({
+    //                     title:x.title,
+    //                     description:x.description,
+    //                     category:x.category,
+    //                     technology:x.technology,
+    //                     title:x.title,
+    //                     price:x.price,
+    //                     duration:x.duration
+    //                 });
+    //             });
+    //             this.forceUpdate();
+    //             // alert(
+    //             //     "Caregiver ID: " + result.id + "\n" +
+    //             //     "Name: " + result.name + "\n" +
+    //             //     "Birth date: " + result.birthDate + "\n" +
+    //             //     "Gender: " + result.gender + "\n" +
+    //             //     "Address: " + result.address + "\n" +
+    //             //     "User ID: " + result.userId + "\n" +
+    //             //     "Doctor ID: " + result.doctorId
+    //             // )
+
+    //         } else {
+    //             this.state.errorStatus = status;
+    //             this.error = error;
+    //             this.forceUpdate();
+    //         }
+    //     });
+    // }
 
     render() {
         return (
@@ -285,17 +266,6 @@ class FreelancerAnnouncementForm extends React.Component {
                 <form onSubmit={this.handleSubmit}>
 
                     <h1>MANAGE ANNOUNCEMENTS</h1>
-                    <br />
-
-                    <p> AnnouncementId: </p>
-                    <input name="price"
-                        className="form-control"
-                        placeholder={this.state.formControls.price.placeholder}
-                        value={this.state.formControls.price.value}
-                        onChange={this.handleChange}
-                        touched={this.state.formControls.price.touched}
-                    />
-
                     <br />
                     <p> Title: </p>
                     <input name="title"
@@ -368,11 +338,10 @@ class FreelancerAnnouncementForm extends React.Component {
                             onClick={this.handleUpdate}>
                             Update
                 </Button>
-
-                        <Button
-                            onClick={this.handleDelete}>
-                            Delete
-                </Button>
+                {/* <Button
+                            onClick={this.handleRefreshTable}>
+                            Refresh table
+                </Button> */}
                     </div>
 
                 </form>

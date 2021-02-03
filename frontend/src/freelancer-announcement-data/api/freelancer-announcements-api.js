@@ -19,6 +19,33 @@ function getAnnouncementsByFreelancerId(params, callback){
     RestApiClient.performRequest(request, callback);
 }
 
+function getAnnouncementById(id, callback){
+    let request = new Request(HOST.backend_api + endpoint.announcements_endpoint + id, {
+       method: 'GET',
+       headers : {
+        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+    }
+    });
+
+    console.log(request.url);
+    RestApiClient.performRequest(request, callback);
+}
+
+function getAnnouncementByTitleAndFreelancerId(id, params, callback) {
+    var requestParams = new URLSearchParams({
+        title: params.title
+    })
+
+    let request = new Request(HOST.backend_api + endpoint.announcements_endpoint + "freelancer/" + id + '?' + requestParams, {
+        method: 'GET',
+        headers : {
+            'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+        }
+    });
+    console.log(request.url);
+    RestApiClient.performRequest(request, callback);
+}
+
 function postAnnouncements(announcement, callback){
     let request = new Request(HOST.backend_api + endpoint.announcements_endpoint , {
         method: 'POST',
@@ -51,13 +78,12 @@ function updateAnnouncement(announcement, id, callback){
     RestApiClient.performRequest(request, callback);
 }
 
-function deleteAnnouncement(params, callback){
-    let request = new Request(HOST.backend_api + endpoint.announcements_endpoint, {
+function deleteAnnouncement(id, callback){
+    let request = new Request(HOST.backend_api + endpoint.announcements_endpoint + id, {
        method: 'DELETE',
        headers : {
         'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-    },
-    body: JSON.stringify(params)
+        }
     });
 
     console.log(request.url);
@@ -67,6 +93,8 @@ function deleteAnnouncement(params, callback){
 
 export {
     getAnnouncementsByFreelancerId,
+    getAnnouncementById,
+    getAnnouncementByTitleAndFreelancerId,
     postAnnouncements,
     updateAnnouncement,
     deleteAnnouncement
