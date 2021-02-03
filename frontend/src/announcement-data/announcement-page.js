@@ -78,9 +78,9 @@ class AnnouncementPage extends React.Component {
             loadPage: false,
             errorStatus: 0,
             error: null,
-            price: 0,
-            duration: 0,
-            freelancer: 0,
+            // priceService: 0,
+            // durationService: 0,
+            // freelancerService: 0,
             formControls: {
 
                 idAnnouncement: {
@@ -135,11 +135,11 @@ class AnnouncementPage extends React.Component {
 
     componentDidMount() {
         this.fetchAnnouncements();
-        let params = {
-            price: '10',
-            operator: 'ge'
-        };
-        this.fetchAnnouncementsByPrice(params);
+        // let params = {
+        //     price: '10',
+        //     operator: 'ge'
+        // };
+        // this.fetchAnnouncementsByPrice(params);
     }
 
     fetchAnnouncements() {
@@ -171,19 +171,18 @@ class AnnouncementPage extends React.Component {
         return API_ANNOUNCEMENTS.getAnnouncementById(id, (result, status, err) => {
             console.log("Result getAnnouncementById: " + result);
             if (result !== null && status === 200) {
-                console.log("result price" + result.price)
                 // this.setState({
                 //     price: result.price,
                 //     duration: result.duration,
                 //     freelancer: result.freelancer.id
                 //   });
-                //   console.log("Price is " + this.state.price);
-                  localStorage.setItem('priceService', result.price);
-                  localStorage.setItem('durationService', result.duration);
-                  localStorage.setItem('freelancerService', result.freelancer.id);
+                console.log("fetchAnnouncementById: " + result.price + " " + result.duration + " " + result.freelancer);
+                localStorage.setItem('priceService', result.price);
+                localStorage.setItem('durationService', result.duration);
+                localStorage.setItem('freelancerService', result.freelancer.id);
                 this.forceUpdate();
             } else {
-                console.log("Error!!!");
+                console.log("Error fetch!!!");
                 this.state.errorStatus = status;
                 this.state.error = err;
                 this.forceUpdate();
@@ -281,12 +280,12 @@ class AnnouncementPage extends React.Component {
                 <div>
                     <center><h5>Select an announcement</h5></center>
                     <input name="idAnnouncement"
-                        style={buttonStyle}
                         className="form-control"
                         placeholder={this.state.formControls.idAnnouncement.placeholder}
                         value={this.state.formControls.idAnnouncement.value}
                         onChange={this.handleChange}
                         touched={this.state.formControls.idAnnouncement.touched}
+                        style={buttonStyle}
                     />
                     <Button style={buttonStyle}
                         onClick={this.handleRequestService}>
