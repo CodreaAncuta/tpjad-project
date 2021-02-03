@@ -83,7 +83,7 @@ class FreelancerAnnouncementForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleGet = this.handleGet.bind(this);
-        // this.handleRefreshTable = this.handleRefreshTable.bind(this);
+        this.refreshPage = this.refreshPage.bind(this);
     }
 
     toggleForm() {
@@ -94,6 +94,9 @@ class FreelancerAnnouncementForm extends React.Component {
 
     }
 
+    refreshPage() {
+        window.location.reload(false);
+    }
 
     handleChange = event => {
 
@@ -119,29 +122,31 @@ class FreelancerAnnouncementForm extends React.Component {
     };
 
     registerAnnouncement(announcement) {
+        this.refreshPage();
         return API_ANNOUNCEMENTS.postAnnouncements(announcement, (result, status, error) => {
             console.log(result);
 
             if (result !== null && (status === 200 || status === 201)) {
                 console.log("Successfully inserted announcement with id: " + result.id);
-                alert("Successfully inserted announcement. Id: " + result.id);
+                alert("Successfully inserted announcement!");
                 this.forceUpdate();
             } else {
                 this.state.errorStatus = status;
                 this.error = error;
-                this.forceUpdate();
             }
         });
     }
 
     updateAnnouncement(announcement, id) {
+        this.refreshPage();
         console.log(announcement);
         return API_ANNOUNCEMENTS.updateAnnouncement(announcement, id, (result, status, error) => {
             console.log(result);
 
             if (result !== null && (status === 200 || status === 201)) {
                 console.log("Successfully updated announcement with id: " + result);
-                alert("Successfully updated announcement with id: " + result.id);
+                alert("Successfully updated announcement!");
+                this.forceUpdate();
             } else {
                 this.state.errorStatus = status;
                 this.error = error;
@@ -153,10 +158,12 @@ class FreelancerAnnouncementForm extends React.Component {
 
         console.log("New announcement data:");
         console.log("title: " + this.state.formControls.title.value);
-        console.log("description: " + this.state.formControls.description.value);
+        console.log(this.state.formControls.description.value === null);
+        console.log(this.state.formControls.description.value === undefined);
         console.log("category: " + this.state.formControls.category.value);
         console.log("technology: " + this.state.formControls.technology.value);
 
+        
         let announcement = {
             title: this.state.formControls.title.value,
             description: this.state.formControls.description.value,
@@ -166,6 +173,21 @@ class FreelancerAnnouncementForm extends React.Component {
             duration: this.state.formControls.duration.value,
             freelancerId: localStorage.getItem('userId')
         };
+
+        if (this.state.formControls.description.value === null)
+        announcement.description = this.state.formControls.description.placeholder;
+
+        if (this.state.formControls.category.value == null)
+        announcement.category = this.state.formControls.category.placeholder;
+
+        if (this.state.formControls.technology.value == null)
+        announcement.technology = this.state.formControls.technology.placeholder;
+
+        if (this.state.formControls.price.value == null)
+        announcement.price = this.state.formControls.price.placeholder;
+
+        if (this.state.formControls.duration.value == null)
+        announcement.duration = this.state.formControls.duration.placeholder;
 
         this.updateAnnouncement(announcement, localStorage.getItem('announcementIdCurrent'));
     }
@@ -201,12 +223,12 @@ class FreelancerAnnouncementForm extends React.Component {
                 alert("Successfully fetched announcement: " + result.title);
                 localStorage.setItem('announcementIdCurrent', result.id);
                 this.idAnnouncement = result.id;
-                this.state.formControls.title.placeholder = result.title;
-                this.state.formControls.description.placeholder = result.description;
-                this.state.formControls.category.placeholder = result.category;
-                this.state.formControls.technology.placeholder = result.technology;
-                this.state.formControls.price.placeholder = result.price;
-                this.state.formControls.duration.placeholder = result.duration;
+                this.state.formControls.title.value = result.title;
+                this.state.formControls.description.value = result.description;
+                this.state.formControls.category.value = result.category;
+                this.state.formControls.technology.value = result.technology;
+                this.state.formControls.price.value = result.price;
+                this.state.formControls.duration.value = result.duration;
                 this.forceUpdate();
             } else {
                 this.state.errorStatus = status;

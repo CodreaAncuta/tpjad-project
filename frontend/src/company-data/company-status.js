@@ -51,9 +51,6 @@ const filters = [
     },
     {
         accessor: 'announcementId',
-    },
-    {
-        accessor: '',
     }
 ];
 
@@ -70,6 +67,11 @@ class CompanyStatus extends React.Component{
         this.companyServicesIds=[];
 
         this.handelDeleteService = this.handelDeleteService.bind(this);
+        this.refreshPage = this.refreshPage.bind(this);
+    }
+
+    refreshPage() {
+        window.location.reload(false);
     }
 
     fetchCompanyInfo(userId){
@@ -92,7 +94,7 @@ class CompanyStatus extends React.Component{
     }
 
     handelDeleteService(serv) {
-
+        this.refreshPage(); 
         return API_COMPANY.deleteService(serv, (result,status,err) => {
             if(result != null && status == 200){
                 alert("Successfully deleted service with id: " + serv.id);

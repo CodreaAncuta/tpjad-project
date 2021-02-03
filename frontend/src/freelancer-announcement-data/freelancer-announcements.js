@@ -35,6 +35,14 @@ const columns = [
         accessor: 'technology',
     },
     {
+        Header: 'Price',
+        accessor: 'price',
+    },
+    {
+        Header: 'Duration',
+        accessor: 'duration',
+    },
+    {
         Header:  'Delete',
         accessor: 'deleteAnnouncement',
     }
@@ -59,7 +67,10 @@ const filters = [
         accessor: 'technology'
     },
     {
-        accessor: '',
+        accessor: 'price'
+    },
+    {
+        accessor: 'duration'
     }
 ];
 
@@ -77,6 +88,7 @@ class FreelancerAnnouncementPage extends React.Component {
 
         this.tableData = [];
         this.handleDeleteAnnouncement = this.handleDeleteAnnouncement.bind(this);
+        this.refreshPage = this.refreshPage.bind(this);
     }
 
     handleLogout() {
@@ -100,9 +112,9 @@ class FreelancerAnnouncementPage extends React.Component {
     }
 
     handleDeleteAnnouncement(announcement) {
+        this.refreshPage();
         return API_ANNOUNCEMENTS.deleteAnnouncement(announcement.id, (result,status,err) => {
-            this.forceUpdate();
-            if(result !== null && (status == 200 || status == 204)){
+            if(result == null && (status === 200 || status === 201)){
                 alert("Successfully deleted announcement!");
                 this.forceUpdate();
             } else {
@@ -111,6 +123,10 @@ class FreelancerAnnouncementPage extends React.Component {
                 this.forceUpdate();
             }
         });
+    }
+
+    refreshPage() {
+        window.location.reload(false);
     }
 
     fetchAnnouncements(params) {
@@ -126,7 +142,7 @@ class FreelancerAnnouncementPage extends React.Component {
                     technology: x.technology,
                     price: x.price,
                     duration: x.duration,
-                    deleteAnnouncement: <button onClick = {() => this.handleDeleteAnnouncement(x)} style={buttonStyle}> Request </button>
+                    deleteAnnouncement: <button onClick = {() => {this.handleDeleteAnnouncement(x)}} style={buttonStyle}>Request</button>
                 });
             });
                this.forceUpdate();

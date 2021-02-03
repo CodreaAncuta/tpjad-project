@@ -39,8 +39,12 @@ const columns = [
         accessor: 'price'
     },
     {
-        Header: 'Duration',
+        Header: 'Duration (Days)',
         accessor: 'duration'
+    },
+    {
+        Header:  'RequestService',
+        accessor: 'requestService',
     }
 ];
 
@@ -113,17 +117,13 @@ class AnnouncementPage extends React.Component {
         }
     }
 
-    handleRequestService() {
-        console.log("Announcement number: " + this.state.formControls.idAnnouncement.value);
-        this.fetchAnnouncementById(this.state.formControls.idAnnouncement.value);
-        console.log("Test price: " + localStorage.getItem('priceService'));
-
+    handleRequestService(announcement) {
         let serviceBody = {
-            jobPrice: localStorage.getItem('priceService'),
-            jobDuration: localStorage.getItem('durationService'),
-            freelancerId: localStorage.getItem('freelancerService'),
+            jobPrice: announcement.price,
+            jobDuration: announcement.duration,
+            freelancerId: announcement.freelancerId,
             companyId: localStorage.getItem('userId'),
-            announcementId: this.state.formControls.idAnnouncement.value
+            announcementId: announcement.id
         };
 
         this.saveServiceRequest(serviceBody);
@@ -154,7 +154,8 @@ class AnnouncementPage extends React.Component {
                         category: x.category,
                         technology: x.technology,
                         price: x.price,
-                        duration: x.duration
+                        duration: x.duration,
+                        requestService: localStorage.getItem('role') === userRoles.COMPANY ? <button onClick = {() => this.handleRequestService(x)} style={buttonStyle}> Request </button> : null
                     });
                 });
                 this.forceUpdate();
@@ -274,7 +275,7 @@ class AnnouncementPage extends React.Component {
 
                 {this.state.errorStatus > 0 &&
                     <APIResponseErrorMessage errorStatus={this.state.errorStatus} error={this.state.error} />}
-                <br/> <br/>
+                {/* <br/> <br/>
                 {
                 localStorage.getItem('role') === userRoles.COMPANY ?
                 <div>
@@ -293,7 +294,7 @@ class AnnouncementPage extends React.Component {
                     </Button>
                 </div>
                 : null
-                }
+                } */}
             </div>
         );
     };

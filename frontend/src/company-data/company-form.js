@@ -49,17 +49,6 @@ class CompanyForm extends React.Component {
                     }
                 },
 
-                password: {
-                    value: '',
-                    placeholder: 'Company password...',
-                    valid: false,
-                    touched: false,
-                    validationRules: {
-                        minLength: 3,
-                        isRequired: true
-                    }
-                },
-
                 areaOfWork: {
                     value: '',
                     placeholder: 'Area of work...',
@@ -80,14 +69,17 @@ class CompanyForm extends React.Component {
         this.companyServicesIds=[];
 
         this.handleChange = this.handleChange.bind(this);
-        
         this.handleUpdate = this.handleUpdate.bind(this);
-        
+        this.refreshPage = this.refreshPage.bind(this);
 
     }
 
     toggleForm() {
         this.setState({ collapseForm: !this.state.collapseForm });
+    }
+
+    refreshPage() {
+        window.location.reload(false);
     }
 
     fetchServices(){
@@ -116,12 +108,12 @@ class CompanyForm extends React.Component {
                 //update form placeholder:
 
                 if (this.company != null){
-                    this.state.formControls.companyId.placeholder = this.company.id;
-                    this.state.formControls.email.placeholder = this.company.email;
-                    this.state.formControls.name.placeholder = this.company.name;
-                    this.state.formControls.password.placeholder = this.company.password;
-                    this.state.formControls.city.placeholder = this.company.city;
-                    this.state.formControls.areaOfWork.placeholder = this.company.areaOfWork;
+                    this.state.formControls.companyId.value = this.company.id;
+                    this.state.formControls.email.value = this.company.email;
+                    this.state.formControls.name.value = this.company.name;
+                    //this.state.formControls.password.placeholder = this.company.password;
+                    this.state.formControls.city.value = this.company.city;
+                    this.state.formControls.areaOfWork.value = this.company.areaOfWork;
                 }
                 if (this.company != null){
                     this.fetchServices();
@@ -174,7 +166,7 @@ class CompanyForm extends React.Component {
         return API_COMPANY.updateCompany(company, (result, status, error) => {
 
             if (result !== null && (status === 200 || status === 201)) {
-               // alert("Successfully updated company with id: " + result.id);
+               alert("Successfully updated details!");
                this.forceUpdate();
             } else {
                 this.state.errorStatus = status;
@@ -188,15 +180,15 @@ class CompanyForm extends React.Component {
 
         let companyLocal = {
             id: this.company.id,
-            name: "",
-            email: this.company.email,
-            password: this.company.password,
-            areaOfWork: "",
-            city: "",
+            name: this.state.formControls.name.value,
+            emailContact: this.state.formControls.email.value,
+            areaOfWork: this.state.formControls.areaOfWork.value,
+            city: this.state.formControls.city.value,
             logo: "",
             servicesId: this.companyServicesIds
         };
 
+        console.log("Placeholder " + this.state.formControls.name.placeholder);
         if (this.state.formControls.name.value == null)
             companyLocal.name = this.state.formControls.name.placeholder;
         else
@@ -264,19 +256,6 @@ class CompanyForm extends React.Component {
                     <br />
 
                     <div className="form-group">
-                        <p className="cformLabel"> Password: </p>
-                        <input name="password"
-                            className="form-control"
-                            placeholder={this.state.formControls.password.placeholder}
-                            value={this.state.formControls.password.value}
-                            onChange={this.handleChange}
-                            touched={this.state.formControls.password.toString()}
-                        />
-                    </div>
-
-                    <br />
-
-                    <div className="form-group">
                         <p className="cformLabel"> Area of work: </p>
                         <input name="areaOfWork"
                             className="form-control"
@@ -306,6 +285,7 @@ class CompanyForm extends React.Component {
                             Update
                         </Button>
                     </div>
+                    <br/>
 
                 </form>
             </div>

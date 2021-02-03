@@ -68,18 +68,20 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
                 .autoApprove(true);
     }
 
-    @Override
-    public void configure(final AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore()).authenticationManager(authenticationManager).accessTokenConverter(defaultAccessTokenConverter())
-                .userDetailsService(userDetailsService)
-                .exceptionTranslator(loggingExceptionTranslator());
-    }
-
     @Bean
     public TokenStore tokenStore() {
         return new JwtTokenStore(defaultAccessTokenConverter());
     }
 
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        endpoints
+                .tokenStore(tokenStore())
+                .accessTokenConverter(defaultAccessTokenConverter())
+                .authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService)
+                .exceptionTranslator(loggingExceptionTranslator());
+    }
     @Bean
     public JwtAccessTokenConverter defaultAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();

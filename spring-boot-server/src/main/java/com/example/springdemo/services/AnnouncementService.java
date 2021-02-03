@@ -105,7 +105,14 @@ public class AnnouncementService {
         if (!announcementOptional.isPresent()) {
             return null;
         }
-        return announcementRepository.save(builder.generateEntityFromDTO(aDTO));
+        Announcement announcement = announcementOptional.get();
+        announcement.setCategory(aDTO.getCategory());
+        announcement.setTechnology(aDTO.getTechnology());
+        announcement.setDescription(aDTO.getDescription());
+        announcement.setTitle(aDTO.getTitle());
+        announcement.setDuration(aDTO.getDuration());
+        announcement.setPrice(aDTO.getPrice());
+        return announcementRepository.save(announcement);
     }
 
     public void delete(Integer id) {

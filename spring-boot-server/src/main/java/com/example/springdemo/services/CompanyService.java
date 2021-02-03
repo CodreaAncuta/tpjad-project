@@ -1,12 +1,15 @@
 package com.example.springdemo.services;
 
+import com.example.springdemo.dto.AnnouncementDTO;
 import com.example.springdemo.dto.CompanyDTO;
 import com.example.springdemo.dto.builders.CompanyBuilder;
+import com.example.springdemo.entities.Announcement;
 import com.example.springdemo.entities.Company;
 import com.example.springdemo.errorhandler.ResourceNotFoundException;
 import com.example.springdemo.repositories.CompanyRepository;
 import com.example.springdemo.repositories.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -52,14 +55,27 @@ public class CompanyService {
                 .getId();
     }
 
-    public Company update(CompanyDTO cDTO) {
+//    public Company update(CompanyDTO cDTO) {
+//
+//        Optional<Company> companyOptional = companyRepository.findById(cDTO.getId());
+//        if (!companyOptional.isPresent()) {
+//            throw new ResourceNotFoundException("Company", "user id", cDTO.getId());
+//
+//        }
+//        return companyRepository.save(builder.generateEntityFromDTO(cDTO));
+//    }
 
+    public Company update(CompanyDTO cDTO) {
         Optional<Company> companyOptional = companyRepository.findById(cDTO.getId());
         if (!companyOptional.isPresent()) {
-            throw new ResourceNotFoundException("Company", "user id", cDTO.getId());
-
+            return null;
         }
-        return companyRepository.save(builder.generateEntityFromDTO(cDTO));
+        Company company = companyOptional.get();
+        company.setAreaOfWork(cDTO.getAreaOfWork());
+        company.setCity(cDTO.getCity());
+        company.setName(cDTO.getName());
+        company.setEmail(cDTO.getEmailContact());
+        return companyRepository.save(company);
     }
 
     public void delete(Integer id) {
